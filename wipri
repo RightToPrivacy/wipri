@@ -1,0 +1,210 @@
+#!/bin/bash
+#
+# wipri: MAC/device/WiFi TX randomizer
+#
+# written for my own privacy uses/work: hope you find it useful
+#
+# For ethical Human Rights purposes;
+# (Privacy: A Universal Human Right declared under UN Dec Human Rights)
+#
+# NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
+# can derive MAC address; to disable feature change turnipv6 variable to "off"
+#
+# Author e-mail: <righttoprivacy@tutanota.com>
+# Github: https://github.com/righttoprivacy
+# https://politictech.wordpress.com - privacy coverage/updates
+# https://twitter.com/tvprivacy
+# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ
+#
+
+export WHITE='\e[1;37m'
+export BLUE='\033[1;94m'
+export RED='\033[1;91m'
+export ENDCOLOR='\033[1;00m'
+
+cat << "EOF"
+
+             @@                     @@            
+           @@   @@              ,@@   @.          
+          &@   @@  @@         @&  @@   @          
+          @@  @@  @@           @@  @@  @@         
+          @(  @@  @@ [WiPri v1]@@  @@  @@         
+          @@  @@   @          *@   @@  @@         
+           @@  @@      .--.'      @@  @@
+            @@  .     |0_0 |'    @@  @@
+             @@       |:_/ |'   &   @@
+                     //   \ \'     
+                    (|     | )'
+                    /'\_   _/'\\'
+                   \___)=(___/'                                                  
+
+
+EOF
+
+echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/Device Privacy$ENDCOLOR"
+echo ""
+echo -e "$BLUE concept/code: $ENDCOLOR  $RED righttoprivacy@tutanota.com $ENDCOLOR"
+echo ""
+echo -e "$WHITE ----------------------------------------------------------- $ENDCOLOR"
+sleep .5
+echo -e "$BLUE Detecting Devices: $ENDCOLOR"
+sleep .5
+nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p'
+echo -e "$BLUE MAC Addresses: $ENDCOLOR"
+iw dev|grep addr
+echo -e "$BLUE Usage: $ENDCOLOR"
+echo "wipri -d [device] -r [randomizes mac continually changing times/addresses] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
+echo ""
+echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
+echo ""
+
+# VARIABLES
+hightime="1200"
+lowtime="600"
+statictime="500"		# time in sec between resets of static mac (to prevent driver crash leaks)
+turnipv6="off"			# default is ipv6 off- change to "on" if you do NOT want to disable ipv6
+oui_file='/etc/wipri/OUI.final'	# Valid OUI list required for verifiable MAC addresses
+
+# ipv6 disable - mac address can be derived from ipv6 address/privacy issues
+if [ $turnipv6 == "off" ]; then
+    sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
+    sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
+    sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
+fi
+
+# flags
+while getopts ":d:rm:ihRsH" arg; do
+	case $arg in
+	 d)
+	    netdev=${OPTARG}
+	    echo -e "device is $RED $netdev $ENDCOLOR" 
+	   ;;
+	 r)
+	    echo -e "$RED randomizing mac address at continually changing times/addresses $ENDCOLOR"
+	       
+	    macrand() {
+		while : 
+		do
+	    	    hexchar="ABCDEF0123456789"
+            	    beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
+               	    end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+            	    mac=$beg$end
+            	    rando=$((RANDOM%$hightime+$lowtime))
+            	    /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
+            	    /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+            	    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+            	    echo ""
+            	    /bin/echo -e "$BLUE next change: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
+            	    sleep $rando
+		done
+	    }
+
+	    macrand &
+	   ;;
+	 m)
+	    echo -e "$BLUE setting static: $RED ${OPTARG} $ENDCOLOR"
+	    ip link set dev $netdev down;ip link set dev $netdev address ${OPTARG};ip link set dev $netdev up
+	   ;;
+	 i)
+	    echo -e "$BLUE new static random MAC identity (retained/reset to prevent leaks) $ENDCOLOR"
+
+	    newident() {
+	        hexchar="ABCDEF0123456789"
+                beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
+                end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+                mac=$beg$end
+                /bin/echo -e "$BLUE New hardware identity set $ENDCOLOR: $WHITE (random static MAC identity)$ENDCOLOR"
+		/bin/echo -e "$BLUE MAC changed to: $RED$mac$ENDCOLOR"
+
+		while :
+		do
+                    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+                    echo ""
+                    sleep $statictime
+		done
+            }
+
+            newident &
+	    ;;
+	 h)
+	     echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'	# Saving original hostname for easy -R flag restore
+	     array[0]="localhost" 
+	     array[1]="laptop" 
+	     array[2]="computer" 
+	     array[3]="DESKTOP" 
+	     array[4]="My-iPhone" 
+	     array[5]="PC" 
+	     array[6]="Toshiba"
+	     groupnum=$[ $RANDOM % 7 ]
+	     hostbase=${array[$groupnum]}
+	     if [ $hostbase == "localhost" ]; then
+		 hostnamectl set-hostname localhost.localdomain
+		 echo -e "$BLUE hostname is $REDlocalhost.localdomain$ENDCOLOR, a fine generic Linux hostname."
+	     elif [ $hostbase == "My-iPhone" ]; then
+		 randhostname="My-iPhone"
+		 hostnamectl set-hostname My-iPhone
+		 /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR My-iPhone"
+	     elif [ $hostbase != "localhost" ]; then
+	   	 randhostname="$hostbase-$RANDOM"
+        	 hostnamectl set-hostname $randhostname
+	         /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
+	     fi
+	    ;;
+	  R)
+	    if [ ! -f /etc/wipri/hostname.saved ]; then
+		echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
+		sleep .5
+		echo ""
+		echo -e "Did you ever use -h [required to store hostname for restore] \007?"
+	    else
+	    	/etc/wipri/hostname.saved
+	    	hostnamectl set-hostname $ORG_HOSTNAME
+	    	echo -e " $GREEN*$BLUE Hostname restored to $ORG_HOSTNAME\n"
+	    	rm /etc/wipri/hostname.saved
+	    fi
+	    ;;
+	 s)
+	     # NOTE: this function is just for experimental and testing purposes
+	     signaljumper() {
+	     while :
+	     do
+	         hightx=20			# WARNING: stay w/in bounds of law for your area
+		 lowtx=5			# lower tx number for variations
+	   	 echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
+		 rando=$((RANDOM%$hightime+$lowtime))
+	  	 randtx=$((RANDOM%$hightx+$lowtx))
+		 sleep 1
+		 iwconfig $netdev txpower $randtx
+		 echo -e "$BLUE $netdev tx power is now: $RED $randtx"
+		 sleep $rando
+	     done
+	     }
+	     signaljumper &
+	    ;;
+	 H)
+	    sleep .75
+	    echo ""
+	    echo -e "$WHITE WiPri uses whichever flags you choose to use. $ENDCOLOR"
+	    echo -e "$RED [Careful not to combine flags that conflict with one another] $ENDCOLOR"
+	    echo -e "$WHITE To use for seperate devices, run more than once instance $ENDCOLOR"
+	    echo -e "$WHITE [I changed format to make running background/cron/boot more efficient] $ENDCOLOR"
+	    echo ""
+	    echo -e "$WHITE Example #1:$ENDCOLOR wipri -d wlan0 -r -h on -s on"
+	    echo -e "$BLUE [Above] randomize wlan0 at continuously changing times/MAC addresses; randomize hostname; location randomization $ENDCOLOR"
+	    echo -e "$BLUE -r mode is ideal for fluid situations- when travelling it can help protect identity; $ENDCOLOR"
+	    echo -e "$WHITE Example #2:$ENDCOLOR wipri -d wlan1 -m 00:00:00:00:00:00 -h off -s off"
+	    echo -e "$BLUE [Above] sets wlan1 MAC of your choice (static); hostname change [off]; signal changes [off]"
+            echo ""
+            echo -e "$WHITE Example #3:$ENDCOLOR wipri -d wlan0 -i -h -s"
+            echo -e "$BLUE [Above] sets wlan1 static random MAC identity; hostname changes; signal changes [on]"
+	    echo ""
+	    echo -e "$WHITE Example #4:$ENDCOLOR wipri -d wlan1mon -M"
+	    echo -e "$BLUE [Above] sets wlan1mon to new random MAC identity (static/single MAC) hostname/signal changes both [OFF]"
+	    echo ""
+	    echo -e "$WHITE Example #5:$ENDCOLOR wipri -R"
+	    echo -e "$BLUE [Above] sets back your previous hostname: $RED NOTE: MUST HAVE USED -h PREVIOUSLY $ENDCOLOR"
+	    echo ""
+	    echo -e "For more details: $RED README.md$ENDCOLOR"
+	    ;;
+	esac
+done
