@@ -6,10 +6,9 @@
 
 
 ### Simple Setup/Installation for new wipri command on Linux:
- sudo chmod +x install.sh
- sudo install.sh
+sudo bash install.sh
  
- That's it. Now you have wipri installed as a command for anytime you need privacy of hostname or mac address or signal. Or try  all three types at the same time.
+ That's it. Now wipri is installed as a command for anytime you need privacy of hostname or mac address or signal. Or all three at the same time.
 
 USE:
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals]
