@@ -167,9 +167,9 @@ while getopts ":d:rm:ihRsH" arg; do
 	     signaljumper() {
 	     while :
 	     do
-                 hightime=100                   # higher number for rand time for sig variation
-                 lowtime=60                     # lower number for rand time for sig variation
-                 hightx=20                      # WARNING: stay w/in bounds of law for your area
+                 hightime=300                   # higher number for rand time for sig variation
+                 lowtime=100                     # lower number for rand time for sig variation
+                 hightx=30                      # WARNING: stay w/in bounds of law for your area
                  lowtx=3                        # lower number for txpower variations
                  echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
                  rando=$((RANDOM%$hightime+$lowtime))
