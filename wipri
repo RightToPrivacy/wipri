@@ -6,6 +6,8 @@
 #
 # For ethical Human Rights purposes;
 # (Privacy: A Universal Human Right declared under UN Dec Human Rights)
+# Ideal for ethical Red/BlueTeam pentesters, journalists, investigators and
+# anyone else interested in learning about privacy concepts
 #
 # NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
 # can derive MAC address; to disable feature change turnipv6 variable to "off"
@@ -168,7 +170,7 @@ while getopts ":d:rm:ihRsH" arg; do
 	     signaljumper() {
 	     while :
 	     do
-	         hightx=20			# WARNING: stay w/in bounds of law for your area
+	         hightx=20			# WARNING: stay in bounds of any transmit regulations for your area
 		 lowtx=5			# lower tx number for variations
 	   	 echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
 		 rando=$((RANDOM%$hightime+$lowtime))
