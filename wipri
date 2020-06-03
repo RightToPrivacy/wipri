@@ -14,9 +14,6 @@
 #
 # Author e-mail: <righttoprivacy@tutanota.com>
 # Github: https://github.com/righttoprivacy
-# https://politictech.wordpress.com - privacy coverage/updates
-# https://twitter.com/tvprivacy
-# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ
 #
 
 export WHITE='\e[1;37m'
