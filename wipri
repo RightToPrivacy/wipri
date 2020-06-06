@@ -1,19 +1,25 @@
 #!/bin/bash
-#
-# wipri: MAC/device/WiFi TX randomizer
-#
-# written for my own privacy uses/work: hope you find it useful
+# wipri: WiFi Privacy
+# MAC/device/WiFi TX randomizer
 #
 # For ethical Human Rights purposes;
-# (Privacy: A Universal Human Right declared under UN Dec Human Rights)
-# Ideal for ethical Red/BlueTeam pentesters, journalists, investigators and
-# anyone else interested in learning about privacy concepts
+# (Privacy: Declared a Universal Human Righteclunder UN Dec Human Rights)
 #
 # NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
 # can derive MAC address; to disable feature change turnipv6 variable to "off"
 #
+# Tip: -a enables all 3 changes to happen simultaneously to mimic new 
+# devices: changes to random MAC addresses/hostnames/txpower signal strengths, 
+# continuously, at varied, continously randomized changing time periods
+#
+# *If you try experimental txpower options be sure to keep 'hightx'
+# variable low enough to do so within your countries regulations*
+#
 # Author e-mail: <righttoprivacy@tutanota.com>
 # Github: https://github.com/righttoprivacy
+# https://politictech.wordpress.com - privacy coverage/updates
+# https://twitter.com/tvprivacy
+# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ
 #
 
 export WHITE='\e[1;37m'
@@ -40,29 +46,34 @@ cat << "EOF"
 
 EOF
 
-echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/Device Privacy$ENDCOLOR"
+echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/WiFi Device Privacy$ENDCOLOR"
 echo ""
 echo -e "$BLUE concept/code: $ENDCOLOR  $RED righttoprivacy@tutanota.com $ENDCOLOR"
 echo ""
 echo -e "$WHITE ----------------------------------------------------------- $ENDCOLOR"
 sleep .5
-echo -e "$BLUE Detecting Devices: $ENDCOLOR"
+echo -e "$BLUE Detected Devices: $ENDCOLOR"
 sleep .5
 nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p'
-echo -e "$BLUE MAC Addresses: $ENDCOLOR"
-iw dev|grep addr
 echo -e "$BLUE Usage: $ENDCOLOR"
-echo "wipri -d [device] -r [randomizes mac continually changing times/addresses] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
+echo "wipri -d [device][any combination of below flags here]"
+echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength at" 
+echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
+echo "-r [randomizes mac continually changing times/addresses] -m [Static MAC]"
+echo "-i [new MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
 echo ""
 echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
 echo ""
 
+
 # VARIABLES
-hightime="1200"
-lowtime="600"
+hightime="600"			# Make this number higher if you want randomization times longer
+lowtime="400"			# Make this number lower to lower min time randomized
+rando=$((RANDOM%$hightime+$lowtime))
 statictime="500"		# time in sec between resets of static mac (to prevent driver crash leaks)
 turnipv6="off"			# default is ipv6 off- change to "on" if you do NOT want to disable ipv6
 oui_file='/etc/wipri/OUI.final'	# Valid OUI list required for verifiable MAC addresses
+
 
 # ipv6 disable - mac address can be derived from ipv6 address/privacy issues
 if [ $turnipv6 == "off" ]; then
@@ -71,84 +82,139 @@ if [ $turnipv6 == "off" ]; then
     sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
 fi
 
-# flags
-while getopts ":d:rm:ihRsH" arg; do
-	case $arg in
-	 d)
-	    netdev=${OPTARG}
-	    echo -e "device is $RED $netdev $ENDCOLOR" 
-	   ;;
-	 r)
-	    echo -e "$RED randomizing mac address at continually changing times/addresses $ENDCOLOR"
-	       
-	    macrand() {
-		while : 
-		do
-	    	    hexchar="ABCDEF0123456789"
-            	    beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
-               	    end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
-            	    mac=$beg$end
-            	    rando=$((RANDOM%$hightime+$lowtime))
-            	    /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
-            	    /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
-            	    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-            	    echo ""
-            	    /bin/echo -e "$BLUE next change: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
-            	    sleep $rando
-		done
-	    }
 
-	    macrand &
+# Hostname randomization
+function hostn {
+    echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'     # Saving original hostname for easy -R flag restore
+    array[0]="localhost" 
+    array[1]="laptop" 
+    array[2]="computer" 
+    array[3]="DESKTOP" 
+    array[4]="My-iPhone" 
+    array[5]="PC" 
+    array[6]="Toshiba"
+    groupnum=$[ $RANDOM % 7 ]
+    hostbase=${array[$groupnum]}
+
+    if [ $hostbase == "localhost" ]; then
+        hostnamectl set-hostname localhost.localdomain
+        echo -e "$BLUE hostname is $RED'localhost.localdomain'$ENDCOLOR, $BLUE a fine generic Linux hostname. $ENDCOLOR"
+    elif [ $hostbase == "My-iPhone" ]; then
+        randhostname="My-iPhone"
+        hostnamectl set-hostname My-iPhone
+        /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR $RED My-iPhone $ENDCOLOR"
+    elif [ $hostbase != "localhost" ]; then
+        randhostname="$hostbase-$RANDOM"
+        hostnamectl set-hostname $randhostname
+        /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
+    fi
+}
+
+
+# MAC randomization
+function macrand {
+    hexchar="ABCDEF0123456789"
+    beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
+    end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+    mac=$beg$end
+    /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+    echo ""
+}
+
+
+# Signal TX strength randomization to confuse trackers that work by signal strength (experimental)
+function signaljumper() {
+    hightx=20                      # WARNING: stay w/in bounds of tx regulations for your country code
+    lowtx=3                        # lower number for txpower variations
+    echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
+    randtx=$((RANDOM%$hightx+$lowtx))
+    sleep 1
+    iwconfig $netdev txpower $randtx
+    echo -e "$BLUE setting $netdev tx power: $RED $randtx"
+}
+
+
+# flags
+while getopts ":d:arm:ihRsH" arg; do
+	case $arg in
+
+	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
+	 d)
+	   netdev=${OPTARG}
+	   echo -e "device is $RED $netdev $ENDCOLOR" 
+	 ;;
+
+
+	# Anonymous/private mode: continually changing MAC/hostname/signal strength
+	# coordinating all 3 options to happen simultaneously scheduled at
+	# continually changing randomized time periods
+         a)
+	   echo -e "$BLUE WiPri Anonymous mode starting... $ENDCOLOR"
+           echo -e "$BLUE [Coordinated MAC/Hostnames/Txpower] - at continually changing times/addresses] $ENDCOLOR"
+           echo -e "$BLUE [randomized MAC addresses + hostnames + signal strength in unison help confuse trackers]"
+	   echo ""
+	   /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
+
+           while :
+           do
+	       unset rando;unset mac;unset randtx
+	       rando=$((RANDOM%$hightime+$lowtime))
+	       sleep .5
+               macrand ; hostn; signaljumper 
+    	       echo ""
+    	       /bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
+               sleep $rando
+           done
+           ;;
+
+
+	# Continually randomizing MAC address mode [changing times/addresses]
+	 r)
+	    echo -e "$RED randomizing MAC address at continually changing times/addresses $ENDCOLOR"
+
+	    while :
+	    do
+	        macrand
+		/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+		/bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
+		sleep $rando
+	    done
 	   ;;
+
+
+	# Set your own static MAC choice with -m
 	 m)
 	    echo -e "$BLUE setting static: $RED ${OPTARG} $ENDCOLOR"
-	    ip link set dev $netdev down;ip link set dev $netdev address ${OPTARG};ip link set dev $netdev up
+
+	    while :
+	    do
+	    	ip link set dev $netdev down;ip link set dev $netdev address ${OPTARG};ip link set dev $netdev up
+		sleep $statictime
+	    done
 	   ;;
+
+
+	# New MAC identity option [-i] single randomized MAC address to be held as long as wipri running
 	 i)
 	    echo -e "$BLUE new static random MAC identity (retained/reset to prevent leaks) $ENDCOLOR"
+	    macrand
 
-	    newident() {
-	        hexchar="ABCDEF0123456789"
-                beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
-                end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
-                mac=$beg$end
-                /bin/echo -e "$BLUE New hardware identity set $ENDCOLOR: $WHITE (random static MAC identity)$ENDCOLOR"
-		/bin/echo -e "$BLUE MAC changed to: $RED$mac$ENDCOLOR"
-
-		while :
-		do
-                    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-                    echo ""
-                    sleep $statictime
-		done
-            }
-
-            newident &
+	    while :
+	    do
+                ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+                sleep $statictime
+	    done
 	    ;;
-	 h)
-	     echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'	# Saving original hostname for easy -R flag restore
-	     array[0]="localhost" 
-	     array[1]="laptop" 
-	     array[2]="computer" 
-	     array[3]="DESKTOP" 
-	     array[4]="My-iPhone" 
-	     array[5]="PC" 
-	     array[6]="Toshiba"
-	     groupnum=$[ $RANDOM % 7 ]
-	     hostbase=${array[$groupnum]}
-	     if [ $hostbase == "localhost" ]; then
-		 hostnamectl set-hostname localhost.localdomain
-		 echo -e "$BLUE hostname is $REDlocalhost.localdomain$ENDCOLOR, a fine generic Linux hostname."
-	     elif [ $hostbase == "My-iPhone" ]; then
-		 randhostname="My-iPhone"
-		 hostnamectl set-hostname My-iPhone
-		 /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR My-iPhone"
-	     elif [ $hostbase != "localhost" ]; then
-	   	 randhostname="$hostbase-$RANDOM"
-        	 hostnamectl set-hostname $randhostname
-	         /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
-	     fi
+
+
+	# Randomized hostname option -h [generic/common base w/randomized extension to blend in]
+	  h)
+	   hostn
 	    ;;
+
+
+	# Restore your previous MAC address [must have first used -h to save address]
 	  R)
 	    if [ ! -f /etc/wipri/hostname.saved ]; then
 		echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
@@ -162,28 +228,32 @@ while getopts ":d:rm:ihRsH" arg; do
 	    	rm /etc/wipri/hostname.saved
 	    fi
 	    ;;
-	 s)
-	     # NOTE: this function is just for experimental and testing purposes
-	     signaljumper() {
+
+
+	# Randomized signal at randomized changing times (NOTE: experimental proof of concept) 
+	# continually changes signal radius for trackers adding confusion depending on layout
+	# can (depending on environment/trackers) simulate movement [EXPERIMENTAL]
+	# DISCLAIMER: be sure not to exceed any local regulations for tx
+       	   s)
+	     echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
+
 	     while :
 	     do
-                 hightime=300                   # higher number for rand time for sig variation
-                 lowtime=100                     # lower number for rand time for sig variation
-                 hightx=30                      # WARNING: stay w/in bounds of law for your area
-                 lowtx=3                        # lower number for txpower variations
-                 echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
-                 rando=$((RANDOM%$hightime+$lowtime))
-                 randtx=$((RANDOM%$hightx+$lowtx))
-                 sleep 1
-                 iwconfig $netdev txpower $randtx
-                 echo -e "$BLUE $netdev tx power is now: $RED $randtx"
-                 echo -e "$BLUE for $RED$rando sec"
-                 sleep $rando
+		 rando=$((RANDOM%$hightime+$lowtime))
+	  	 randtx=$((RANDOM%$hightx+$lowtx))
+		 sleep 1
+		 signaljumper
+		 echo -e "$BLUE $netdev tx power is now: $RED $randtx"
+		 echo -e "$BLUE for $RED$rando sec"
+		 sleep $rando
 	     done
-	     }
-	     signaljumper &
+
 	    ;;
+
+
+	# Examples/Help
 	 H)
+
 	    sleep .75
 	    echo ""
 	    echo -e "$WHITE WiPri uses whichever flags you choose to use. $ENDCOLOR"
@@ -206,7 +276,11 @@ while getopts ":d:rm:ihRsH" arg; do
 	    echo -e "$WHITE Example #5:$ENDCOLOR wipri -R"
 	    echo -e "$BLUE [Above] sets back your previous hostname: $RED NOTE: MUST HAVE USED -h PREVIOUSLY $ENDCOLOR"
 	    echo ""
-	    echo -e "For more details: $RED README.md$ENDCOLOR"
+            echo -e "$WHITE Example #6:$ENDCOLOR wipri -d wlan0 -a"
+            echo -e "$BLUE [Above] continuously changing: randomized [wlan0] MAC addresses + hostnames $ENDCOLOR"
+	    echo -e "$BLUE + signal randomization, each changing at the same time, continually; $ENDCOLOR"
+	    echo ""
+	    echo -e "$WHITE For more details:$ENDCOLOR $RED README.md$ENDCOLOR"
 	    ;;
 	esac
 done
