@@ -16,22 +16,22 @@ sleep .5
 echo "Making wipri an executable command..."
 chmod +x /usr/bin/wipri
 sleep .5
-echo "We are done!"
+echo "We are done here!"
 echo ""
-echo "simply type wipri (as root) or sudo wipri to begin using"
+echo "Simply type wipri (as root) or sudo wipri to begin using/receive help."
 echo ""
 sleep .25
-echo "Would you like to add wipri to change identity at boot (systemd)?"
-echo "This will start a new unique identity (mac/hostname) for your wifi device at each boot."
+echo "Would you like to additionally have wipri change your identity at boot (systemd)?"
+echo "This will start a new uniquely generated identity (mac/hostname) for your wifi device at each boot."
 read -p "Start a new disinfo identity at each boot (yes/no)?: " boot
 if [ $boot == yes ]; then
     cp wipri.service /etc/systemd/system/wipri.service
     systemctl daemon-reload
     systemctl enable wipri.service
     systemctl start wipri.service
-    echo "WiPri has been added to each boot." 
-    echo "To stop/disable issue at boot: systemctl stop wipri && systemctl disable wipri"
-    echo "Enjoy!"
-else
-    exit 0
+    echo "WiPri has been started/added new identity at each boot." 
+    echo "To stop/disable issue at boot: systemctl stop wipri && systemctl disable wipri."
+    echo "Enjoy your right to privacy [Declared a basic right in United Nations Declaration Of Human Rights]."
+else 
+    "You did not select 'yes' for starting at boot. Thus we are exiting. wipri installed as command only."
 fi
