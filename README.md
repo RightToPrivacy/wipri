@@ -3,6 +3,8 @@
 #
 
 # Run wipri command anytime you need privacy or (optionally) add it to cron or systemd. 
+# install.sh only installs at boot if you answer 'yes' for the question to do so
+# otherwise install.sh only installs wipri as a command you can use anytime (as root/sudo)
 
 
 ### Simple Setup/Installation for new wipri command on Linux:
