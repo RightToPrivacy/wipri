@@ -1,0 +1,17 @@
+# Contents of /etc/systemd/system/wipri.service
+[Unit]
+Description=wipri MAC/Hostname Changer/A Network Disinfo Enhancement
+After=network.target
+
+# Feel free to change wipri commands below to meet your needs/wants
+[Service]
+Type=simple
+ExecStart=/usr/bin/wipri -d wlan0 -i -h
+ExecReload=killall -9 wipri;/usr/bin/wipri -d wlan0 -i
+ExecStop=killall -9 wipri
+Restart=on-failure
+RemainAfterExit=no
+
+
+[Install]
+WantedBy=multi-user.target
