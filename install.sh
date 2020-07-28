@@ -21,11 +21,10 @@ echo ""
 echo "simply type wipri (as root) or sudo wipri to begin using"
 echo ""
 sleep .25
-echo "Would you like to add wipri to systemd? (yes/no)"
+echo "Would you like to add wipri to change identity at boot (systemd)?"
 echo "This will start a new unique identity (mac/hostname) for your wifi device at each boot."
 read -p "Start a new disinfo identity at each boot (yes/no)?: " boot
 if [ $boot == yes ]; then
-do
     cp wipri.service /etc/systemd/system/wipri.service
     systemctl daemon-reload
     systemctl enable wipri.service
@@ -33,6 +32,6 @@ do
     echo "WiPri has been added to each boot." 
     echo "To stop/disable issue at boot: systemctl stop wipri && systemctl disable wipri"
     echo "Enjoy!"
-done
 else
-
+    exit 0
+fi
