@@ -223,10 +223,10 @@ while getopts ":d:arm:ihRsH" arg; do
 	# Restore your previous MAC address [must have first used -h to save address]
         R)
 	    if [ ! -f /etc/wipri/hostname.saved ]; then
-		    echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
-		    sleep .5
-		    echo ""
-		    echo -e "Did you ever use -h [required to store hostname for restore] \007?"
+		echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
+		sleep .5
+		echo ""
+		echo -e "Did you ever use -h [required to store hostname for restore] \007?"
 	    else
 	    	/etc/wipri/hostname.saved
 	    	hostnamectl set-hostname $ORG_HOSTNAME
