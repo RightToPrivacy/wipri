@@ -2,6 +2,8 @@
 # wipri: WiFi Privacy
 # MAC/device/WiFi TX randomizer
 #
+# ***-m or -r flags 'check' depends on iw command*** (comes w/most Linux)
+#
 # For ethical Human Rights purposes;
 # (Privacy: Declared a Universal Human Righteclunder UN Dec Human Rights)
 #
@@ -136,14 +138,12 @@ function signaljumper() {
 function maccheck() {
 	while : 
 	do
-	    curmac=$(ifconfig $netdev | sed '3q;d' | awk '{ print $2 }')
+	    curmac=$(iw $netdev info | sed '4q;d' | awk '{ print $2 }')
 	    sleep .25
 	    echo "Current mac is: $curmac"
 	    if [ $curmac != $mac ]; then
 	        echo "mac address wrong. resetting!"
 	        ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-        else
-            # echo "MAC is still good!"
 	    fi
 	    sleep $checktime
 	done       
