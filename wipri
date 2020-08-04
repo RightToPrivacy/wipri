@@ -28,7 +28,6 @@ export RED='\033[1;91m'
 export ENDCOLOR='\033[1;00m'
 
 cat << "EOF"
-
              @@                     @@            
            @@   @@              ,@@   @.          
           &@   @@  @@         @&  @@   @          
@@ -42,8 +41,6 @@ cat << "EOF"
                     (|     | )'
                     /'\_   _/'\\'
                    \___)=(___/'                                                  
-
-
 EOF
 
 echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/WiFi Device Privacy$ENDCOLOR"
@@ -59,14 +56,15 @@ echo -e "$BLUE Usage: $ENDCOLOR"
 echo "wipri -d [device][any combination of below flags here]"
 echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength at" 
 echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
-echo "-r [randomizes mac continually changing times/addresses] -m [Static MAC]"
-echo "-i [new MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
+echo "-r [randomizes mac continually changing times/addresses] -m [Static MAC (Your Choice) Here]"
+echo "-i [new (valid) MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
 echo ""
 echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
 echo ""
 
 
 # VARIABLES
+checktime="20"			# seconds between mac address checks: lower for more frequent checks
 hightime="600"			# Make this number higher if you want randomization times longer
 lowtime="400"			# Make this number lower to lower min time randomized
 rando=$((RANDOM%$hightime+$lowtime))
@@ -113,7 +111,7 @@ function hostn {
 
 # MAC randomization
 function macrand {
-    hexchar="ABCDEF0123456789"
+    hexchar="abcdef0123456789"
     beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
     end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
     mac=$beg$end
@@ -134,43 +132,60 @@ function signaljumper() {
     echo -e "$BLUE setting $netdev tx power: $RED $randtx"
 }
 
+# check mac address frequenty to be sure firmware didn't change it/crash
+function maccheck() {
+	while : 
+	do
+	    curmac=$(ifconfig $netdev | sed '3q;d' | awk '{ print $2 }')
+	    sleep .25
+	    echo "Current mac is: $curmac"
+	    if [ $curmac != $mac ]; then
+	        echo "mac address wrong. resetting!"
+	        ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+        else
+            # echo "MAC is still good!"
+	    fi
+	    sleep $checktime
+	done       
+	}
+
 
 # flags
 while getopts ":d:arm:ihRsH" arg; do
 	case $arg in
 
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
-	 d)
-	   netdev=${OPTARG}
-	   echo -e "device is $RED $netdev $ENDCOLOR" 
+       d)
+	netdev=${OPTARG}
+	echo -e "device is $RED $netdev $ENDCOLOR" 
 	 ;;
 
 
 	# Anonymous/private mode: continually changing MAC/hostname/signal strength
 	# coordinating all 3 options to happen simultaneously scheduled at
 	# continually changing randomized time periods
-         a)
-	   echo -e "$BLUE WiPri Anonymous mode starting... $ENDCOLOR"
-           echo -e "$BLUE [Coordinated MAC/Hostnames/Txpower] - at continually changing times/addresses] $ENDCOLOR"
-           echo -e "$BLUE [randomized MAC addresses + hostnames + signal strength in unison help confuse trackers]"
-	   echo ""
-	   /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
+        a)
+	 echo -e "$BLUE WiPri Anonymous mode starting... $ENDCOLOR"
+         echo -e "$BLUE [Coordinated MAC/Hostnames/Txpower] - at continually changing times/addresses] $ENDCOLOR"
+         echo -e "$BLUE [randomized MAC addresses + hostnames + signal strength in unison help confuse trackers]"
+	 echo ""
+	 /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
 
-           while :
-           do
-	       unset rando;unset mac;unset randtx
-	       rando=$((RANDOM%$hightime+$lowtime))
-	       sleep .5
-               macrand ; hostn; signaljumper 
-    	       echo ""
-    	       /bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
-               sleep $rando
-           done
+        while :
+        do
+	    unset rando;unset mac;unset randtx
+	    rando=$((RANDOM%$hightime+$lowtime))
+	    sleep .5
+            macrand ; hostn; signaljumper 
+    	    echo ""
+    	    /bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
+            sleep $rando
+        done
            ;;
 
 
 	# Continually randomizing MAC address mode [changing times/addresses]
-	 r)
+       r)
 	    echo -e "$RED randomizing MAC address at continually changing times/addresses $ENDCOLOR"
 
 	    while :
@@ -184,43 +199,34 @@ while getopts ":d:arm:ihRsH" arg; do
 
 
 	# Set your own static MAC choice with -m
-	 m)
+        m)
 	    echo -e "$BLUE setting static: $RED ${OPTARG} $ENDCOLOR"
-
-	    while :
-	    do
-	    	ip link set dev $netdev down;ip link set dev $netdev address ${OPTARG};ip link set dev $netdev up
-		sleep $statictime
-	    done
+            mac=${OPTARG}
+            maccheck   
 	   ;;
 
 
 	# New MAC identity option [-i] single randomized MAC address to be held as long as wipri running
-	 i)
+        i)
 	    echo -e "$BLUE new static random MAC identity (retained/reset to prevent leaks) $ENDCOLOR"
 	    macrand
-
-	    while :
-	    do
-                ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-                sleep $statictime
-	    done
+	    maccheck
 	    ;;
 
 
 	# Randomized hostname option -h [generic/common base w/randomized extension to blend in]
-	  h)
-	   hostn
+        h)
+	    hostn
 	    ;;
 
 
 	# Restore your previous MAC address [must have first used -h to save address]
-	  R)
+        R)
 	    if [ ! -f /etc/wipri/hostname.saved ]; then
-		echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
-		sleep .5
-		echo ""
-		echo -e "Did you ever use -h [required to store hostname for restore] \007?"
+		    echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
+		    sleep .5
+		    echo ""
+		    echo -e "Did you ever use -h [required to store hostname for restore] \007?"
 	    else
 	    	/etc/wipri/hostname.saved
 	    	hostnamectl set-hostname $ORG_HOSTNAME
@@ -234,25 +240,25 @@ while getopts ":d:arm:ihRsH" arg; do
 	# continually changes signal radius for trackers adding confusion depending on layout
 	# can (depending on environment/trackers) simulate movement [EXPERIMENTAL]
 	# DISCLAIMER: be sure not to exceed any local regulations for tx
-       	   s)
+        s)
 	     echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
 
 	     while :
 	     do
-		 rando=$((RANDOM%$hightime+$lowtime))
-	  	 randtx=$((RANDOM%$hightx+$lowtx))
-		 sleep 1
-		 signaljumper
-		 echo -e "$BLUE $netdev tx power is now: $RED $randtx"
-		 echo -e "$BLUE for $RED$rando sec"
-		 sleep $rando
+		     rando=$((RANDOM%$hightime+$lowtime))
+	  	     randtx=$((RANDOM%$hightx+$lowtx))
+		     sleep 1
+		     signaljumper
+		     echo -e "$BLUE $netdev tx power is now: $RED $randtx"
+		     echo -e "$BLUE for $RED$rando sec"
+		     sleep $rando
 	     done
 
 	    ;;
 
 
 	# Examples/Help
-	 H)
+        H)
 
 	    sleep .75
 	    echo ""
