@@ -6,6 +6,8 @@
 # install.sh only installs at boot if you answer 'yes' for the question to do so
 # otherwise install.sh only installs wipri as a command you can use anytime (as root/sudo)
 
+### NOTE: BE CAREFUL USING -h (hostname randomization). It is option but best used for systemd use only. (can cause conflicts in .Xauthority- if it causes issue chown $USERNAME /home/$USERNAME/.Xauthority
+
 
 ### Simple Setup/Installation for new wipri command on Linux:
 sudo bash install.sh
