@@ -1,6 +1,8 @@
 # wipri (WiFi Privacy)
 ### WIFi MAC Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
 #
+# Author: righttoprivacy@tutanota.com 
+#
 
 # Run wipri command anytime you need privacy or (optionally) add it to cron or systemd. 
 # install.sh only installs at boot if you answer 'yes' for the question to do so
