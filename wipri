@@ -108,6 +108,9 @@ function hostn {
         hostnamectl set-hostname $randhostname
         /bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
     fi
+    
+    dhclient -r $netdev
+    dhclient $netdev
 }
 
 
