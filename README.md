@@ -1,13 +1,12 @@
-# wipri (WiFi Privacy)
-# WIFi MAC/Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
-# [Without disconnecting you from the internet]
-#
+### wipri (WiFi Privacy)
+### WIFi MAC/Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
+### [Without disconnecting you from the internet]
 #
 
-# USE:
+### USE:
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals]
 
-# Features:
+### Features:
 -d sets your device 
 
 -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times
@@ -35,10 +34,10 @@ a new mac identity on each boot. You can change this by editing the wipri.servic
 
 Do not forget to include -d [devicename] when issuing commands.
 
-# Additional Info: 
+### Additional Info: 
 
 wipri generated mac addresses use valid OUI's (unlike many mac randomizations)
-# Why does wipri use valid OUI's? 
+### Why does wipri use valid OUI's? 
 One documented method of tracking down a devices' 'real mac address' includes
 cancelling/striking out all mac addresses with an invalid/nonexistent OUI preface.
 From here one can narrow down from false OUI's. Wipri avoids this issue by using OUI lists.
