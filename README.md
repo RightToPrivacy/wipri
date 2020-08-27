@@ -2,7 +2,6 @@
 # WIFi MAC/Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
 # [Without disconnecting you from the internet]
 #
-# Author: righttoprivacy@tutanota.com 
 #
 
 # USE:
@@ -10,13 +9,21 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
 # Features:
 -d sets your device 
+
 -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times
+
 -m [mac here] sets a mac address of your choice, holds it for remainder of running (checks to ensure firmware does not reset it)
+
 -h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
+
 -R restore previously held hostname
+
 -H prints help; print out wipri command examples
+
 -i generates a valid OUI based
+
 -s txpower randomizer (experimental) randomizes the txpower of your device. This can WiFi confuse trackers that determine location by signal strength
+
 -a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices. All 3 changes happen simultaneously, at changing, randomized times.
 
 ### Simple Setup/Installation for new wipri command on Linux:
@@ -44,4 +51,3 @@ install.sh will install as a command only, or command + boot (systemd) if you an
 Wipri disables ipv6 by default (ipv6 addresses at times are based on mac address)
 If you do not wish to disable ipv6, change value of $turnipv6 variable to 'on'.
 
-# This README is under construction. 
