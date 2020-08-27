@@ -1,7 +1,9 @@
 ### wipri (WiFi Privacy)
 ### WIFi MAC/Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
 ### [Without disconnecting you from the internet]
-#
+###
+### righttoprivacy@tutanota.com
+### 
 
 ### USE:
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals]
