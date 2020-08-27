@@ -20,9 +20,9 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
 -H prints help; print out wipri command examples
 
--i generates a valid OUI based
+-i generates a valid OUI based mac identity 
 
--s txpower randomizer (experimental) randomizes the txpower of your device. This can WiFi confuse trackers that determine location by signal strength
+-s txpower randomizer (experimental) randomizes the txpower of your device. This confuses certain WiFI trackers that determine location by signal strength
 
 -a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices. All 3 changes happen simultaneously, at changing, randomized times.
 
