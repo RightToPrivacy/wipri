@@ -143,7 +143,6 @@ function maccheck() {
 	do
 	    curmac=$(iw $netdev info | sed '4q;d' | awk '{ print $2 }')
 	    sleep .25
-	    echo "Current mac is: $curmac"
 	    if [ $curmac != $mac ]; then
 	        echo "mac address wrong. resetting!"
 	        ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
