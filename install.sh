@@ -7,7 +7,8 @@
 echo "Creating /etc/wipri directory..."
 sudo mkdir /etc/wipri
 sleep .5
-echo "Copying OUI.final into /etc/wipri/OUI.final..."
+echo "Copying OUI files into /etc/wipri..."
+sudo cp phone.OUI /etc/wipri/phone.OUI
 sudo cp OUI.final /etc/wipri/OUI.final
 sleep .5
 echo "Copying wipri executable to /usr/bin/wipri for command access..."
