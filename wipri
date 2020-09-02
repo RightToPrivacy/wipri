@@ -153,7 +153,7 @@ function maccheck() {
 
 
 # flags
-while getopts ":d:arm:ihRsH" arg; do
+while getopts ":d:aPrm:ihRsH" arg; do
 	case $arg in
 
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
@@ -183,9 +183,20 @@ while getopts ":d:arm:ihRsH" arg; do
     	    /bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
             sleep $rando
         done
-           ;;
+          ;;
+         # phone mimics (Samsung/Apple mac addresses- continually changinge times/random addresses)
+        P)
+            oui_list='/etc/wipri/phone.OUI'		# blend in best w/combined android/iPhone list (most common devices)
+            while :
+            do
+                macrand
+                echo -e "$RED randomizing MAC addresses at continually changing times/iPhone / Android addresses $ENDCOLOR"
+                /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+                /bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
+                sleep $rando
+            done
 
-
+          ;;
 	# Continually randomizing MAC address mode [changing times/addresses]
        r)
 	    echo -e "$RED randomizing MAC address at continually changing times/addresses $ENDCOLOR"
