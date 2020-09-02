@@ -4,6 +4,10 @@
 # Makes wipri a common Linux command
 # Optionally makes systemd unique identity at boot (only if yes is answered at end ques)
 #
+# ***Requirements***: 
+# root privileges, iw command (for certain settings/checking mac), ip command, bash.
+# (Most Linux systems have everything by default)
+#
 echo "Creating /etc/wipri directory..."
 sudo mkdir /etc/wipri
 sleep .5
