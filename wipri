@@ -126,6 +126,20 @@ function macrand {
 }
 
 
+# MAC randomization (phone version- temp version)
+function phmacrand {
+    unset oui_file
+    oui_file='/etc/wipri/phone.OUI' # phone OUI file
+    hexchar="abcdef0123456789"
+    beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
+    end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+    mac=$beg$end
+    /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+    ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+    echo ""
+}
+
+
 # Signal TX strength randomization to confuse trackers that work by signal strength (experimental)
 function signaljumper() {
     hightx=20                      # WARNING: stay w/in bounds of tx regulations for your country code
@@ -186,10 +200,11 @@ while getopts ":d:aPrm:ihRsH" arg; do
           ;;
          # phone mimics (Samsung/Apple mac addresses- continually changinge times/random addresses)
         P)
-            oui_list='/etc/wipri/phone.OUI'		# blend in best w/combined android/iPhone list (most common devices)
+            #unset oui_list
+            #oui_list='/etc/wipri/phone.OUI'		# blend in best w/combined android/iPhone list (most common devices)
             while :
             do
-                macrand
+                phmacrand
                 echo -e "$RED randomizing MAC addresses at continually changing times/iPhone / Android addresses $ENDCOLOR"
                 /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
                 /bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
@@ -197,7 +212,7 @@ while getopts ":d:aPrm:ihRsH" arg; do
             done
 
           ;;
-	# Continually randomizing MAC address mode [changing times/addresses]
+	# Continually randomizing MAC address mode [changing times/addresses- all brands]
        r)
 	    echo -e "$RED randomizing MAC address at continually changing times/addresses $ENDCOLOR"
 
