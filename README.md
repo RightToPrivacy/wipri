@@ -13,6 +13,8 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
 -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times
 
+-P Android/iPhone mimic mode: continually changing randomized Samsung/Apple mac address changes- continually changing, at randomized changing times, using continually changing, randomized yet valid OUI Apple/Samsung mac addresses (this setting allows you to appear to WiFi trackers/sniffers [like KISMET] at any given time, as either an Android or iPhone; 
+
 -m [mac here] sets a mac address of your choice, holds it for remainder of running (checks to ensure firmware does not reset it)
 
 -h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
