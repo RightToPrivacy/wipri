@@ -167,7 +167,7 @@ function maccheck() {
 
 
 # flags
-while getopts ":d:aPrm:ihRsH" arg; do
+while getopts ":d:apPrm:ihRsH" arg; do
 	case $arg in
 
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
@@ -187,23 +187,34 @@ while getopts ":d:aPrm:ihRsH" arg; do
 	 echo ""
 	 /bin/echo -e "$BLUE ghosting MAC/device name $ENDCOLOR: $BLUE random times at random addresses '(MAC address in privacy mode)'"
 
-        while :
-        do
-	    unset rando;unset mac;unset randtx
-	    rando=$((RANDOM%$hightime+$lowtime))
-	    sleep .5
-            macrand ; hostn; signaljumper 
-    	    echo ""
-    	    /bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
-            sleep $rando
-        done
-          ;;
+         while :
+         do
+	 	unset rando;unset mac;unset randtx
+	    	rando=$((RANDOM%$hightime+$lowtime))
+	    	sleep .5
+            	macrand ; hostn; signaljumper 
+    	    	echo ""
+    	    	/bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
+            	sleep $rando
+         done
+         ;;
+		        
+    	# static phone mac mimic: generate/set single valid OUI (Apple/Android) based mac and hold it
+     	p)
+       	while :
+       	do
+		echo -e "$BLUE new static random cellphone MAC identity (retained/checked to prevent leaks) $ENDCOLOR"
+		phmacrand
+		maccheck
+       	done
+     	;;
+
+	  
          # phone mimics (Samsung/Apple mac addresses- continually changinge times/random addresses)
         P)
-            #unset oui_list
-            #oui_list='/etc/wipri/phone.OUI'		# blend in best w/combined android/iPhone list (most common devices)
             while :
             do
+	    	rando=$((RANDOM%$hightime+$lowtime))
                 phmacrand
                 echo -e "$RED randomizing MAC addresses at continually changing times/iPhone / Android addresses $ENDCOLOR"
                 /bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
@@ -218,6 +229,7 @@ while getopts ":d:aPrm:ihRsH" arg; do
 
 	    while :
 	    do
+	    	rando=$((RANDOM%$hightime+$lowtime))
 	        macrand
 		/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
 		/bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
