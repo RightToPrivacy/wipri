@@ -4,16 +4,12 @@
 # Makes wipri a common Linux command
 # Optionally makes systemd unique identity at boot (only if yes is answered at end ques)
 #
-# ***Requirements***: 
-# root privileges, iw command (for certain settings/checking mac), ip command, bash.
-# (Most Linux systems have everything by default)
-#
 echo "Creating /etc/wipri directory..."
 sudo mkdir /etc/wipri
 sleep .5
 echo "Copying OUI files into /etc/wipri..."
-sudo cp phone.OUI /etc/wipri/phone.OUI
-sudo cp OUI.final /etc/wipri/OUI.final
+sudo cp final.OUI /etc/wipri
+sudo cp phone.OUI /etc/wipri
 sleep .5
 echo "Copying wipri executable to /usr/bin/wipri for command access..."
 sudo cp wipri /usr/bin/wipri
