@@ -1,12 +1,11 @@
 ### wipri (WiFi Privacy)
 
-### WIFi MAC/Device Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
+### WIFi Device/MAC/Device Metadata Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
 
 [Without disconnecting you from the internet]
 
 
 righttoprivacy@tutanota.com
-
 
 
 ### USE:
