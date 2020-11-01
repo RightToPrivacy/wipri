@@ -14,15 +14,25 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
 ### Features:
 -d sets your device.
+
 -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
+
 -p Android/iPhone mimic mode: sets single static identity: randomly generated valid mac address of either Apple or Android.
+
 -P Android/iPhone mimic mode: continually changing randomized Samsung/Apple mac address changes- continually changing, at randomized changing times, using continually changing, randomized yet valid OUI Apple/Samsung mac addresses (this setting allows you to appear to WiFi trackers/sniffers [like KISMET] at any given time, as either an Android or iPhone;
+
 -m [mac here] sets a mac address of your choice, holds it for remainder of running (checks to ensure firmware does not reset it)
+
 -h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
+
 -R restore previously held hostname
+
 -H prints help; print out wipri command examples
+
 -i generates a valid OUI based mac identity
--s txpower randomizer (experimental) randomizes the txpower of your device. This confuses certain WiFI trackers that determine location by signal strength
+
+-s txpower randomizer (experimental) randomizes the txpower of your device. This confuses certain WiFI trackers that determine location by signal strength.
+
 -a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices and changing locations. All 3 changes happen simultaneously, at changing, randomized times.
 
 ### Simple Setup/Installation for new wipri command on Linux:
