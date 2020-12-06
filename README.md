@@ -49,7 +49,7 @@ One documented method of tracking down a devices' 'real mac address' includes
 cancelling/striking out all mac addresses with an invalid/nonexistent OUI preface.
 From here one can narrow down from false OUI's. Wipri avoids this issue by using OUI lists.
 wipri is argument/flag based, to more easily allow you to incorporate wipri commands into scripts.
-Run wipri command anytime you need privacy or (optionally) add it to cron or systemd.
-install.sh will install as a command only, or command + boot (systemd) if you answer 'yes' for the question to do so
-Wipri disables ipv6 by default (ipv6 addresses at times are based on mac address)
-If you do not wish to disable ipv6, change value of $turnipv6 variable to 'on'.
+Run wipri command anytime you need privacy or (optionally) or use the install.sh script to install
+wipri w/optional new identity changes for each boot. Wipri disables ipv6 by default 
+(ipv6 addresses at times are based on mac address) If you do not wish to disable ipv6, change value of 
+$turnipv6 variable to 'on'.
