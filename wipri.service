@@ -1,7 +1,10 @@
 # Contents of /etc/systemd/system/wipri.service
 [Unit]
-Description=wipri MAC/Hostname/Network Disinfo Enhancement
-After=network.target
+Description=WiPri Meta/MAC/Privacy Enhancement
+# Change mac
+Before=basic.target
+After=boot.mount
+DefaultDependencies=no
 
 # Feel free to change wipri commands below to meet your needs/wants
 [Service]
@@ -14,4 +17,4 @@ RemainAfterExit=no
 
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=basic.target
