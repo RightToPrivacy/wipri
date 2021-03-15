@@ -1,41 +1,49 @@
 #!/bin/bash
 #
-# wipri: WiFi Privacy (device metadata disinfo enhancement)
+# wipri: WiFi Privacy (device mimic/disinfo enhancement)
 # MAC/device/WiFi TX randomizer
 #
-# WiPri MAC changer only macchanger using valid OUI 
+# WiPri MAC changer by default only using valid OUI 
 # lists (why: invalid OUI's make your MAC more trackable)
+# [You can also put your own .OUI lists together]
 #
-# Works on most Linux (including most Pinephone OS)
-# Requires: bash and ip command
+# Works out of box on most Linux (including most Pinephone OS)
 #
 # Issue: wipri -H
 # for examples printout and descriptions;
 #
-# 'maccheck' func checks mac every 5sec on -p, -m, -i modes
+# 'maccheck' func checks mac every .5sec on -p, -m, -i modes
 # preventing mac leaks (by setting mac again when
 # detected to have changed). Change time by
 # changing 'checktime' var;
 #
 # Ethical REDTEAM/Human Rights purposes;
-# (Privacy: Declared a Universal Human Righteclunder UN Dec Human Rights)
+# Helping you lose those pesky advertising trackers;
+# (Privacy: Declared a Universal Human Right under UN Dec Human Rights)
 #
 # NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
 # can derive MAC address; to disable feature change turnipv6 variable to "off"
 #
-# Tip: -a enables all 3 changes to happen simultaneously to mimic new 
+# Tip #1: -a enables all 3 changes to happen simultaneously to mimic new 
 # devices: changes to random MAC addresses/hostnames/txpower signal strengths, 
 # at varied, randomized changing time periods;
+#
+# TIP #2: static flags recommended for home so as not flood router w/new macs
+#		(ie: -p, -i, -m)
+#
+# TIP #3: continuously changing both times/mac addr flags for travel privacy/movement
+#		(ie: -r, -P, -a)
 #
 # *If you try experimental txpower options be sure to keep 'hightx'
 # variable low enough to do so within your countries regulations*
 #
 # e-mail: <righttoprivacy@tutanota.com>
-# Gitlab: https://gitlab.com/Aresesi
-# Github: https://github.com/righttoprivacy
-# https://politictech.wordpress.com - privacy coverage/updates
-# https://twitter.com/tvprivacy
-# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ - videos on Linux/tech/privacy
+# Gitlab: https://gitlab.com/Aresesi - Repository (Main/1st update)
+# Github: https://github.com/righttoprivacy - Repository mirror
+# https://politictech.wordpress.com - privacy coverage/updates Blog
+# https://twitter.com/tvprivacy - Follow on Twitter
+# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ - videos on Linux/tech
+# https://www.buymeacoffee.com/politictech - support more stuff like this
 #
 
 export WHITE='\e[1;37m'
@@ -64,9 +72,7 @@ echo ""
 echo -e "$BLUE concept/code: $ENDCOLOR  $RED righttoprivacy@tutanota.com $ENDCOLOR"
 echo ""
 echo -e "$WHITE ----------------------------------------------------------- $ENDCOLOR"
-sleep .5
 echo -e "$BLUE Detected Devices: $ENDCOLOR"
-sleep .5
 nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p'
 echo -e "$BLUE Usage: $ENDCOLOR"
 echo "wipri -d [device][any combination of below flags here]"
@@ -74,16 +80,20 @@ echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength
 echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
 echo "-p [static smartphone mimic] Set single static Samsung/Apple MAC identity"
 echo "-P [changing smartphone mimics] continously changing Samsung/Apple at rand times/mac addr"
-echo "-r [randomizes mac continually changing times/addresses] -m [Static MAC (Your Choice) Here]"
-echo "-i [rand (valid) MAC identity] -h [rand hostname] -R [restore prev hostname] -s [random signals] -H help"
-echo ""
+echo "-r [randomizes mac continually changing times/addresses]" 
+echo "-m [Static MAC (Your Choice) Here]"
+echo "-i [rand (valid) MAC identity]"
+echo "-h [rand hostname]"
+echo "-R [restore prev hostname]"
+echo "-s [random signals]" 
+echo "-H help"
 echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
 echo ""
 
 # VARIABLES
-checktime="5"				# seconds between mac addr checks: lower = more frequent checks
-hightime="600"				# Make this number higher if you want randomization times longer
-lowtime="400"				# Make this number lower to lower min time randomized
+checktime=".5"				# seconds between mac addr checks: lower = more frequent checks
+hightime="60"				# Make this number higher if you want randomization times longer
+lowtime="40"				# Make this number lower to lower min time randomized
 rando=$((RANDOM%$hightime+$lowtime))
 statictime="500"			# time in sec between resets of static mac (to prevent driver crash leaks)
 turnipv6="off"				# default is ipv6 off- change to "on" if you do NOT want to disable ipv6
@@ -97,7 +107,7 @@ if [ $turnipv6 == "off" ]; then
 	sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
 fi
 
-# Hostname randomization
+# Hostname randomization - generic yet completely random hostname generation
 function hostn {
 	echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'     # Saving original hostname for easy -R flag restore
     	array[0]="localhost" 
@@ -127,7 +137,7 @@ function hostn {
 	dhclient $netdev
 }
 
-# MAC randomization
+# MAC randomization/setting
 function macrand {
 	hexchar="abcdef0123456789"
 	beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
@@ -204,9 +214,11 @@ while getopts ":d:apPrm:ihRsH" arg; do
 		rando=$((RANDOM%$hightime+$lowtime))
 		sleep .5
            	macrand ; hostn; signaljumper 
+		# maccheck - to be worked out later
        		echo ""
         	/bin/echo -e "$BLUE next changes [New Device]: random times/MAC addresses/signal in: $RED $rando $ENDCOLOR$BLUE sec $ENDCOLOR"
            	sleep $rando
+		# killall -9 maccheck
        done
      ;;
 
@@ -226,10 +238,12 @@ while getopts ":d:apPrm:ihRsH" arg; do
        do
        		rando=$((RANDOM%$hightime+$lowtime))
            	phmacrand
+		# maccheck TBC
            	echo -e "$RED randomizing MAC addresses at continually changing times/iPhone / Android addresses $ENDCOLOR"
            	/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
            	/bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
            	sleep $rando
+		# killall -9 maccheck
        done
        ;;
 
@@ -241,9 +255,12 @@ while getopts ":d:apPrm:ihRsH" arg; do
 	do
 		rando=$((RANDOM%$hightime+$lowtime))
 		macrand
+		#sleep .5 attempting speedup of start
+		# maccheck # TBC
 		/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
            	/bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
 	       	sleep $rando
+		# killall -9 maccheck
 	done
 	;;
 
@@ -259,7 +276,7 @@ while getopts ":d:apPrm:ihRsH" arg; do
 
 	# New MAC identity option [-i] single randomized MAC address to be held as long as wipri running
      i)
-	echo -e "$BLUE new static random valid MAC identity (checked/retained to prevent leaks) $ENDCOLOR"
+	echo -e "$BLUE new static random valid MAC identity ($RED HELD: $BLUE checked/retained to prevent leaks) $ENDCOLOR"
 	macrand
 	maccheck
 	;;
@@ -313,7 +330,7 @@ while getopts ":d:apPrm:ihRsH" arg; do
 	echo -e "$WHITE WiPri uses whichever flags you choose to use. $ENDCOLOR"
 	echo -e "$RED [Careful not to combine flags that conflict with one another] $ENDCOLOR"
 	echo -e "$WHITE To use for seperate devices, run more than once instance $ENDCOLOR"
-	echo -e "$WHITE [I changed format to make running background/cron/boot more efficient] $ENDCOLOR"
+	echo -e "$WHITE [I changed format to make integrating into scripts/programs/boot more efficient] $ENDCOLOR"
 	echo "" && sleep .2
 	echo -e "$WHITE Example #1:$ENDCOLOR wipri -d wlan0 -r -h on -s"
 	echo -e "$BLUE [Above] randomize wlan0 at continuously changing times/MAC addresses; randomize hostname; location randomization $ENDCOLOR"
