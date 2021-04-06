@@ -3,6 +3,9 @@
 # wipri: WiFi Privacy (device mimic/disinfo enhancement)
 # MAC/device/WiFi TX randomizer
 #
+# Support this work by buying me a coffee and/or read my posts: 
+# https://www.buymeacoffee.com/politictech
+#
 # WiPri MAC changer by default only using valid OUI 
 # lists (why: invalid OUI's make your MAC more trackable)
 # [You can also put your own .OUI lists together]
