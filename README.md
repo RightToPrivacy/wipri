@@ -7,6 +7,9 @@
 
 righttoprivacy@tutanota.com
 
+Read my (free) public posts and/or Support my work (gaining access to extras) + consulting options: 
+https://www.buymeacoffee.com/politictech
+
 
 ### USE:
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals]
