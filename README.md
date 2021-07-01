@@ -42,7 +42,7 @@ BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
 ### USE:
 
-wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals]
+wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat notification of new names- add ip address to $ncnotify]
 
 
 ### Features:
@@ -70,7 +70,7 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 -a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices and changing locations. All 3 changes happen simultaneously, at changing, randomized times.
 
 -A WiFi Access Point Randomize: generates a generic yet completely random SSID Network Name and restarts hostapd with this new SSID. Tip: Pair with wipri's static mac settings (i, p, m) to create a new network.
-
+	[for -A above, a netcat notification is optional; be sure to check variables and change $ncnotify variable value to 'on' or 'off': may add flag for this in an update]
 
 ### Simple Setup/Installation for new wipri command on Linux:
 
@@ -83,14 +83,14 @@ a new mac identity on each boot. You can change this by editing the wipri.servic
 Do not forget to include -d [devicename] when issuing commands.
 
 Tip: if you decide to try the newer -A wifi access point randomize, pair with your choice of static mac flags to create new WiFi network (prevents static databasing such as Wigle)
-
+	For the above random ssid option I added optional netcat notification and will expand on this later. Post a question if you have one.
 
 ### Additional Info:
 
 wipri generated mac addresses use valid OUI's (unlike many mac randomizations). See below for why.
 
 If using a Pinephone I suggest selecting -p for home, -P for out. This will mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
-
+For even more broad randomization use -r for continuously changing randomization at continuously changing randomized times (all brands) or -i for static random mac identity
 
 ### Why does wipri use valid OUI's?
 
