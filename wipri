@@ -3,8 +3,18 @@
 # wipri: WiFi Privacy (device mimic/disinfo enhancement)
 # MAC/device/WiFi TX randomizer
 #
-# Support this work by buying me a coffee and/or read my posts: 
+#
+# SUPPORT:
+#
+# BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
+#
+# (Read my public blog posts below or (optionally) grab coffee) 
 # https://www.buymeacoffee.com/politictech
+#
+# CashApp: https://cash.app/$HumanRightsTech
+#
+#
+# SEE README.md FOR ADDITIONAL INFORMATION/LINKS
 #
 # WiPri MAC changer by default only using valid OUI 
 # lists (why: invalid OUI's make your MAC more trackable)
@@ -49,17 +59,20 @@
 # https://www.buymeacoffee.com/politictech - support more stuff like this
 #
 
-export WHITE='\e[1;37m'
+
+# Text Colors
 export BLUE='\033[1;94m'
+export GREEN='\033[1;92m'
 export RED='\033[1;91m'
 export ENDCOLOR='\033[1;00m'
+
 
 cat << "EOF"
              @@                     @@            
            @@   @@              ,@@   @.          
           &@   @@  @@         @&  @@   @          
           @@  @@  @@           @@  @@  @@         
-          @(  @@  @@ [WiPri v1]@@  @@  @@         
+          @(  @@  @@ [WiPri v2]@@  @@  @@         
           @@  @@   @          *@   @@  @@         
            @@  @@      .--.'      @@  @@
             @@  .     |0_0 |'    @@  @@
@@ -68,6 +81,18 @@ cat << "EOF"
                     (|     | )'
                     /'\_   _/'\\'
                    \___)=(___/'                                                  
+
+
+ ▄█     █▄   ▄█     ▄███████▄    ▄████████  ▄█  
+███     ███ ███    ███    ███   ███    ███ ███  
+███     ███ ███▌   ███    ███   ███    ███ ███▌ 
+███     ███ ███▌   ███    ███  ▄███▄▄▄▄██▀ ███▌ 
+███     ███ ███▌ ▀█████████▀  ▀▀███▀▀▀▀▀   ███▌ 
+███     ███ ███    ███        ▀███████████ ███  
+███ ▄█▄ ███ ███    ███          ███    ███ ███  
+ ▀███▀███▀  █▀    ▄████▀        ███    ███ █▀   
+                                ███    ███   
+
 EOF
 
 echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/WiFi Device Privacy$ENDCOLOR"
@@ -88,7 +113,8 @@ echo "-m [Static MAC (Your Choice) Here]"
 echo "-i [rand (valid) MAC identity]"
 echo "-h [rand hostname]"
 echo "-R [restore prev hostname]"
-echo "-s [random signals]" 
+echo "-s [random signals]"
+echo "-A [generic yet randomized WiFi Access Point]"
 echo "-H help"
 echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
 echo ""
@@ -104,6 +130,7 @@ oui_file='/etc/wipri/final.OUI'		# Valid OUI list required for verifiable MAC ad
 phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
 
 # ipv6 disable - mac address can be derived from ipv6 address/privacy issues
+# You will need to make system modifications for permanent change
 if [ $turnipv6 == "off" ]; then
 	sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
     	sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
@@ -190,8 +217,68 @@ function maccheck() {
 }
 
 
+
+########## Begin access point stuff
+
+
+# Base name for network changes 
+# *These are common in US: feel free to edit to match your area*
+namebase1="NETGEAR"
+namebase2="FiOS"
+namebase3="HOME"
+namebase4="xfinitywifi"
+
+
+# If setting nc (netcat) notify set "off" disregard below
+ncnotify="on"			# Turn on or off netcat name change notification
+ncport="2"			# port to send name changes
+ncprotocol="tcp"		# netcat protocol [udp/tcp]
+ncserver="192.168.1.163"	# netcat server to notify each name change (static ip/name)
+
+# **NOTE** edit these as needed to match your needs/system
+hostapdconf='hostapd.conf'	# location for hostapd.conf file
+netdev="wlan0"			# Edit this to match your hostapd wifi device [-d flag should set this ]
+
+
+netname() {
+	array[0]="$namebase1"
+	array[1]="$namebase2"
+	array[2]="$namebase3"
+	array[3]="$namebase4"
+	groupnum=$[ $RANDOM % 4 ]
+	randname=${array[$groupnum]}
+	echo "base is: $randname"
+
+	chars=$(cat /dev/random | tr -dc 'A-Z0-9' | fold -w 5 | head -n 1)
+
+	# Randomizing (Comcast = default: change $namebase3 to match your area)
+	if [ $randname == "$namebase3" ]; then
+		randname=$randname-$chars
+
+	# Randomizing (FiOS is default: change $namebase2 value to match your area)
+	elif [ $randname == "$namebase2" ]; then
+		randname=$randname-$chars
+
+	# Randomizing (NETGEAR default: change $namebase1 value mods this)
+	elif [ $randname == "$namebase1" ]; then
+        	randname=$randname$RANDOM #| fold -w 10
+
+	# Common US name (change $namebase4 variable value above to change)
+	elif [ $randname == "$namebase4" ]; then
+		randname="$namebase4"
+        #/bin/echo -e "$BLUE Your new computer hostname (logged by router/network) is now \e[1;31m$randhostname"
+	else
+		randname="Guest"
+	fi
+	echo "Final Random Name:"
+	echo "$randname"
+
+}
+
+########## End access point stuff
+
 # flags
-while getopts ":d:apPrm:ihRsH" arg; do
+while getopts ":d:apPrm:ihRsAH" arg; do
 	case $arg in
 
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
@@ -324,6 +411,18 @@ while getopts ":d:apPrm:ihRsH" arg; do
 	done
 	;;
 
+	# Randomize WiFi Network Name (SSID)
+	# Set additional flags if you would like to set simultaneous random mac
+     A)
+        netname
+        sed -i "3s/.*/ssid=$randname/" $hostapdconf
+        # TIP: include a wipri static mac flag to simultaneously change :)
+        # wipri -d $netdev -i &  	# uncomment this if you don't want to have to run flags for mac
+        systemctl restart hostapd
+        # Notify remote server of new name change via Netcat [set $ncnotify variable for on/off: default off]
+        notify
+
+        ;;
 
 	# Examples/Help
      H)
@@ -359,6 +458,9 @@ while getopts ":d:apPrm:ihRsH" arg; do
         echo "" && sleep .2
         echo -e "$WHITE Example #8:$ENDCOLOR wipri -d wlan0 -p"
         echo -e "$BLUE [Above] sets wlan0 to single random smartphone MAC identity"
+        echo "" && sleep .2
+        echo -e "$WHITE Example #3:$ENDCOLOR wipri -d wlan0 -A"
+        echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)"
         echo "" && sleep .2
 
 
