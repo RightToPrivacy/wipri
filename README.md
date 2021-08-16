@@ -19,7 +19,9 @@
 SUPPORT:
 
 
-https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also private ethical consulting + message me) 		[backup blog: https://politictech.wordpress.com]
+https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts/Support options; also private ethical consulting + message me) 		
+
+[backup blog: https://politictech.wordpress.com]
 
 BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
 
@@ -32,10 +34,15 @@ VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
 
 
 PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips/videos
+
 ODYSEE VIDEO/FILE CHANNEL: https://odysee.com/$/invite/@RTP:9		(joining Odysee with my invite link helps me promote content + you earn cryptocurrency (LBRY) for watching videos)
+
 YOUTUBE: https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ​
+
 BRIGHTEON: https://www.brighteon.com/channels/righttoprivacy
+
 BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
+
 BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
 
