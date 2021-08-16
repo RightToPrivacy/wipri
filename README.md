@@ -16,7 +16,7 @@
 
 
 
-### SUPPORT:
+# SUPPORT:
 
 
 https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts/Support options; also private ethical consulting + message me) 		
