@@ -16,7 +16,7 @@
 
 
 
-SUPPORT:
+### SUPPORT:
 
 
 https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts/Support options; also private ethical consulting + message me) 		
@@ -30,7 +30,7 @@ CashApp: https://cash.app/$HumanRightsTech
 
 
 
-VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
+### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
 
 
 PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips/videos
