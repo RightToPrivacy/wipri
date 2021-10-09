@@ -14,34 +14,18 @@
 ***NEW: WiFi Access point randomize option (can be installed for boot via install script, or used on demand as wipri command: wipri -d wlan0 -p -A (sets random/valid OUI mac address of Apple/Samsung + simultaneously changes network name/SSID restarting hostapd).
 
 
-
-
-#### SUPPORT:
-
-
-https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts/Support options; also private ethical consulting + message me) 		
-
-[backup blog: https://politictech.wordpress.com]
-
-BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
-
-CashApp: https://cash.app/$HumanRightsTech
-
-
-
-
 ### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
 
 
 PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips/videos
 
-ODYSEE VIDEO/FILE CHANNEL: https://odysee.com/$/invite/@RTP:9		(joining Odysee with my invite link helps me promote content + you earn cryptocurrency (LBRY) for watching videos)
+ODYSEE VIDEO/FILE CHANNEL: https://odysee.com/$/invite/@RTP:9		(join Odysee with my invite link to promote content + earn (LBRY) for watching videos)
 
 YOUTUBE: https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ​
 
 BRIGHTEON: https://www.brighteon.com/channels/righttoprivacy
 
-BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
+BITCHUTE: https://www.bitchute.com/yourprivacytv
 
 BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
@@ -84,6 +68,7 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 First if deciding to install to start at boot (option), edit the wipri flags in wipri.service to your liking. 
 
 sudo bash install.sh
+
 That's it. wipri is now installed as a command. install.sh gives the additional option of starting itself at boot
 if you answer 'yes' to the question of installing as a systemd service. By default the systemd service will start
 a new mac identity on each boot. You can change this by editing the wipri.service file.
@@ -110,5 +95,17 @@ wipri w/optional new identity changes for each boot. Wipri disables ipv6 by defa
 (ipv6 addresses at times are based on mac address) If you do not wish to disable ipv6, change value of 
 $turnipv6 variable to 'on'.
 
+#### SUPPORT:
+
+
+https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts/Support options; also private ethical consulting + message me) 		
+
+[backup blog: https://politictech.wordpress.com]
+
+BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
+
+CashApp: https://cash.app/$HumanRightsTech
+
+XMR: 481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
 
 <righttoprivacy[at]tutanota.com>
