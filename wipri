@@ -1,63 +1,90 @@
 #!/bin/bash
 #
-# wipri: WiFi Privacy (device mimic/disinfo enhancement)
-# MAC/device/WiFi TX randomizer
+# wipri: WiFi/LAN Privacy Metadata Spoof/unique continual randomization options (device mimic/disinfo enhancement)
+# MAC/device/WiFi TX randomizer + SSID/WiFi network randomization
 #
+# Run wipri -H for help/examples (as well as tips below)
 #
-# SUPPORT:
+#--------------------------------------------
+#
+# SUPPORT FUTURE/CURRENT PUBLIC INTEREST WORKS:
 #
 # BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
-#
-# (Read my public blog posts below or (optionally) grab coffee) 
-# https://www.buymeacoffee.com/politictech
-#
+# XMR:481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
 # CashApp: https://cash.app/$HumanRightsTech
+# https://www.buymeacoffee.com/politictech (Read my public blog posts, help me to a coffee (if you like)) 
 #
+#---------------------------------------------
 #
 # SEE README.md FOR ADDITIONAL INFORMATION/LINKS
 #
-# WiPri MAC changer by default only using valid OUI 
+# WiPri MAC changer by default only uses valid OUI 
 # lists (why: invalid OUI's make your MAC more trackable)
 # [You can also put your own .OUI lists together]
 #
-# Works out of box on most Linux (including most Pinephone OS)
+# Works out of box on most Linux (including most Pinephone/Linux phones)
+# WiPri relies on built in Linux standards like ip to change mac address
 #
 # Issue: wipri -H
 # for examples printout and descriptions;
 #
-# 'maccheck' func checks mac every .5sec on -p, -m, -i modes
-# preventing mac leaks (by setting mac again when
-# detected to have changed). Change time by
-# changing 'checktime' var;
+# Unlike other mac changing, WiPri has unique function to ensures no leak on (static) -p, -m, -i modes
+# as another backup to prevent mac leaks (setting mac again when change detected from flag/choice). 
+# ***WARNING: do not attempt to run conflicting commands on same device at same time as devices carry a single mac at a time
 #
 # Ethical REDTEAM/Human Rights purposes;
-# Helping you lose those pesky advertising trackers;
+# Helping you lose those pesky advertising trackers/WiFi Beacon related;
 # (Privacy: Declared a Universal Human Right under UN Dec Human Rights)
 #
 # NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
 # can derive MAC address; to disable feature change turnipv6 variable to "off"
+# [permanent disabling of ipv6 will need sys modification]
 #
-# Tip #1: -a enables all 3 changes to happen simultaneously to mimic new 
-# devices: changes to random MAC addresses/hostnames/txpower signal strengths, 
-# at varied, randomized changing time periods;
+# Tip #1: -a enables 3 changes to happen simultaneously to mimic new 
+# devices: changes random MAC addresses/hostnames/txpower signal strengths, 
+# at varied, randomized continually changing (yet simultaneous) time periods;
 #
-# TIP #2: static flags recommended for home so as not flood router w/new macs
+# TIP #2: static flags recommended for home/work so as not flood home router w/new macs
 #		(ie: -p, -i, -m)
 #
 # TIP #3: continuously changing both times/mac addr flags for travel privacy/movement
 #		(ie: -r, -P, -a)
 #
+# TIP #4: If using -A for randomized SSID (hostapd), select a static mac randomization for simultaneous change to mimic new wifi network
+#
 # *If you try experimental txpower options be sure to keep 'hightx'
 # variable low enough to do so within your countries regulations*
 #
-# e-mail: <righttoprivacy@tutanota.com>
-# Gitlab: https://gitlab.com/Aresesi - Repository (Main/1st update)
-# Github: https://github.com/righttoprivacy - Repository mirror
-# https://politictech.wordpress.com - privacy coverage/updates Blog
-# https://twitter.com/tvprivacy - Follow on Twitter
-# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ - videos on Linux/tech
-# https://www.buymeacoffee.com/politictech - support more stuff like this
+#---------------------------------------------------------------------
+# PLEASE FILE ISSUE ON REPOSITORY BELOW: OR LEAVE USAGE PROBLEM COMMENT ON VIDEO/BLOG
 #
+#
+# DOWNLOADS/SCRIPTS/CODE:
+# Anonymous Code Host Tor .onion (Main): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri 
+# Gitlab: https://gitlab.com/Aresesi - Repository (backup)
+# Github: https://github.com/righttoprivacy - Repository (backup)
+#
+#
+# SOCIAL MEDIA:
+# https://www.fosstodon.org/@RTP - Follow on Mastodon
+# https://twitter.com/tvprivacy - Follow on Twitter
+#
+#
+# VIDEO CHANNELS:
+#
+# ODYSEE: https://odysee.com/@RTP
+# PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips
+# https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ - videos on Linux/tech
+# BITCHUTE: https://www.bitchute.com/yourprivacytv
+#
+# e-mail: <righttoprivacy[at]tutanota.com> (private (ethical) consulting available upon request)
+# Free answers to questions in video/blog comments (maybe your question can help others!) :)
+#
+# BLOG:
+#
+# https://www.buymeacoffee.com/politictech/posts - Main Blog Posts/Extras (Public)
+# https://politictech.wordpress.com - Backup Blog
+#---------------------------------------------------------------------
 
 
 # Text Colors
@@ -72,7 +99,7 @@ cat << "EOF"
            @@   @@              ,@@   @.          
           &@   @@  @@         @&  @@   @          
           @@  @@  @@           @@  @@  @@         
-          @(  @@  @@ [WiPri v2]@@  @@  @@         
+          @(  @@  @@ [WiPri 1.2]@@ @@ @@         
           @@  @@   @          *@   @@  @@         
            @@  @@      .--.'      @@  @@
             @@  .     |0_0 |'    @@  @@
@@ -101,7 +128,7 @@ echo -e "$BLUE concept/code: $ENDCOLOR  $RED righttoprivacy@tutanota.com $ENDCOL
 echo ""
 echo -e "$WHITE ----------------------------------------------------------- $ENDCOLOR"
 echo -e "$BLUE Detected Devices: $ENDCOLOR"
-nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p'
+nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p' || echo "$RED nmcli not found:$ENDCOLOR $BLUEdon't worry, it was optional.$ENDCOLOR"
 echo -e "$BLUE Usage: $ENDCOLOR"
 echo "wipri -d [device][any combination of below flags here]"
 echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength at" 
@@ -114,17 +141,16 @@ echo "-i [rand (valid) MAC identity]"
 echo "-h [rand hostname]"
 echo "-R [restore prev hostname]"
 echo "-s [random signals]"
-echo "-A [generic yet randomized WiFi Access Point]"
+echo "-A [generic randomized WiFi SSID (AP)]"
 echo "-H help"
 echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
 echo ""
 
 # VARIABLES
 checktime=".5"				# seconds between mac addr checks: lower = more frequent checks
-hightime="60"				# Make this number higher if you want randomization times longer
-lowtime="40"				# Make this number lower to lower min time randomized
-rando=$((RANDOM%$hightime+$lowtime))
-statictime="500"			# time in sec between resets of static mac (to prevent driver crash leaks)
+hightime="600"				# Make this number higher if you want randomization times longer
+lowtime="300"				# Make this number lower to lower min time randomized
+rando=$((RANDOM%$hightime+$lowtime))	# Create Random time
 turnipv6="off"				# default is ipv6 off- change to "on" if you do NOT want to disable ipv6
 oui_file='/etc/wipri/final.OUI'		# Valid OUI list required for verifiable MAC addresses
 phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
@@ -138,13 +164,14 @@ if [ $turnipv6 == "off" ]; then
 fi
 
 # Hostname randomization - generic yet completely random hostname generation
+# Feel free to edit these arrays: keep in mind defaults are named strategically for a random yet generic base
 function hostn {
 	echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'     # Saving original hostname for easy -R flag restore
     	array[0]="localhost" 
     	array[1]="laptop" 
     	array[2]="computer" 
     	array[3]="DESKTOP" 
-	array[4]="My-iPhone" 
+	array[4]="Owner-iPhone" 
 	array[5]="PC" 
 	array[6]="Toshiba"
 	groupnum=$[ $RANDOM % 7 ]
@@ -208,7 +235,7 @@ function maccheck() {
 	do
 	    curmac=$(cat /sys/class/net/$netdev/address)
 	    sleep .25
-	    if [ $curmac != $mac ]; then
+	    if [ "$curmac" != "$mac" ]; then
 	    	echo "Sys MAC addr chang detected. Fixing!"
 	        ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
 	    fi
@@ -231,13 +258,13 @@ namebase4="xfinitywifi"
 
 # If setting nc (netcat) notify set "off" disregard below
 ncnotify="on"			# Turn on or off netcat name change notification
-ncport="2"			# port to send name changes
+ncport="60821"			# port to send name changes
 ncprotocol="tcp"		# netcat protocol [udp/tcp]
-ncserver="192.168.1.163"	# netcat server to notify each name change (static ip/name)
+ncserver="192.168.42.38"	# netcat server to notify each name change (static ip/name)
 
 # **NOTE** edit these as needed to match your needs/system
-hostapdconf='hostapd.conf'	# location for hostapd.conf file
-netdev="wlan0"			# Edit this to match your hostapd wifi device [-d flag should set this ]
+hostapdconf='/etc/hostapd/hostapd.conf'	# location for hostapd.conf file
+netdev="wlan0"				# Edit this to match your hostapd wifi device [-d flag should set this ]
 
 
 netname() {
@@ -270,10 +297,19 @@ netname() {
 	else
 		randname="Guest"
 	fi
-	echo "Final Random Name:"
+	echo "SSID Name:"
 	echo "$randname"
 
 }
+
+
+# Notify server of new name changes [Work in progress- set the $ncnotify variable above to 'yes' or 'no' to turn off]
+notify() {
+        if [ $ncnotify == "on" ]; then
+                echo -n $randname >>/dev/$ncprotocol/$ncserver/$ncport
+        fi
+}
+
 
 ########## End access point stuff
 
@@ -318,7 +354,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
        do
 		echo -e "$BLUE new static random cellphone MAC identity (retained/checked to prevent leaks) $ENDCOLOR"
 		phmacrand
-		maccheck
+		maccheck &
        done
      ;;
 
@@ -360,7 +396,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	echo -e "$BLUE setting static: $RED ${OPTARG} $ENDCOLOR"
 	mac=${OPTARG}
 	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-	maccheck
+	maccheck &
 	 ;;
 
 
@@ -368,7 +404,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
      i)
 	echo -e "$BLUE new static random valid MAC identity ($RED HELD: $BLUE checked/retained to prevent leaks) $ENDCOLOR"
 	macrand
-	maccheck
+	maccheck &
 	;;
 
 
@@ -419,6 +455,8 @@ while getopts ":d:apPrm:ihRsAH" arg; do
         # TIP: include a wipri static mac flag to simultaneously change :)
         # wipri -d $netdev -i &  	# uncomment this if you don't want to have to run flags for mac
         systemctl restart hostapd
+	echo ' '
+	/bin/echo -e "$BLUE WiFi Network SSID changed to: $RED $randname $ENDCOLOR"
         # Notify remote server of new name change via Netcat [set $ncnotify variable for on/off: default off]
         notify
 

@@ -7,6 +7,7 @@ After=boot.mount
 DefaultDependencies=no
 
 # Feel free to change wipri commands below to meet your needs/wants
+# install *WILL* use the commands below, edit as needed before running install.sh!
 [Service]
 Type=simple
 ExecStart=/usr/bin/wipri -d wlan0 -i
