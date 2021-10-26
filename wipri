@@ -350,12 +350,9 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 
     # static phone mac mimic: generate/set single valid OUI (Apple/Android) based mac and hold it
      p)
-       while :
-       do
-		echo -e "$BLUE new static random cellphone MAC identity (retained/checked to prevent leaks) $ENDCOLOR"
-		phmacrand
-		maccheck &
-       done
+	echo -e "$BLUE new static random cellphone MAC identity (retained/checked to prevent leaks) $ENDCOLOR"
+	phmacrand
+	maccheck 
      ;;
 
     # cellphone continuous mimics (Samsung/Apple mac addresses- continually changing times/random mac addresses)
@@ -396,7 +393,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	echo -e "$BLUE setting static: $RED ${OPTARG} $ENDCOLOR"
 	mac=${OPTARG}
 	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-	maccheck &
+	maccheck 
 	 ;;
 
 
@@ -404,7 +401,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
      i)
 	echo -e "$BLUE new static random valid MAC identity ($RED HELD: $BLUE checked/retained to prevent leaks) $ENDCOLOR"
 	macrand
-	maccheck &
+	maccheck 
 	;;
 
 
