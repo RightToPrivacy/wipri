@@ -13,37 +13,6 @@
 
 ***NEW: WiFi Access point randomize option (can be installed for boot via install script, or used on demand as wipri command: wipri -d wlan0 -p -A (sets random/valid OUI mac address of Apple/Samsung + simultaneously changes network name/SSID restarting hostapd).
 
-
-
-SUPPORT CURRENT/FUTURE WORKS:
-
-
-https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also private ethical consulting + message me) 		[backup blog: https://politictech.wordpress.com]
-
-BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
-
-CashApp: https://cash.app/$HumanRightsTech
-
-XMR:481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
-
-
-### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
-
-
-PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips/videos
-
-ODYSEE VIDEO/FILE CHANNEL: https://odysee.com/$/invite/@RTP:9		(joining Odysee with my invite link helps me promote content + you earn cryptocurrency (LBRY) for watching videos)
-
-YOUTUBE: https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ​
-
-BRIGHTEON: https://www.brighteon.com/channels/righttoprivacy
-
-BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
-
-BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
-
-
-
 ### USE:
 
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat notification of new names- add ip address to $ncnotify]
@@ -112,6 +81,37 @@ Run wipri command anytime you need privacy or (optionally) or use the install.sh
 wipri w/optional new identity changes for each boot. Wipri disables ipv6 by default 
 (ipv6 addresses at times are based on mac address) If you do not wish to disable ipv6, change value of 
 $turnipv6 variable to 'on'.
+
+
+##### SUPPORT (if you like):
+
+
+https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also private ethical consulting + message me) 		
+
+Blog Mirror: https://politictech.wordpress.com]
+
+BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
+
+CashApp: https://cash.app/$HumanRightsTech
+
+XMR:481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
+
+
+### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
+
+
+PEERTUBE: https://tube.tchncs.de/video-channels/privacy__tech_tips/videos
+
+ODYSEE VIDEO/FILE CHANNEL: https://odysee.com/$/invite/@RTP:9		(joining Odysee with my invite link helps me promote content + you earn cryptocurrency (LBRY) for watching videos)
+
+YOUTUBE: https://www.youtube.com/channel/UChVCEXzi39_YEpUQhqmEFrQ​
+
+BRIGHTEON: https://www.brighteon.com/channels/righttoprivacy
+
+BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
+
+BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
+
 
 
 <righttoprivacy[at]tutanota.com>
