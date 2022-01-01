@@ -88,11 +88,9 @@ $turnipv6 variable to 'on'.
 ##### SUPPORT (if you like):
 
 
-https://www.buymeacoffee.com/politictech (public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also private ethical consulting + message me) 		
+https://www.buymeacoffee.com/politictech (current BTC, public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also private ethical consulting + message me) 		
 
 Blog Mirror: https://politictech.wordpress.com]
-
-BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
 
 CashApp: https://cash.app/$HumanRightsTech
 
