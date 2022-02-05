@@ -4,6 +4,9 @@
 # Makes wipri a common Linux command
 # Optionally makes systemd unique identity at boot (only if yes is answered at end ques)
 #
+# Public Blog/Tutorials and Support Options + more: https://buymeacoffee.com/politictech
+# WiPri Guide: https://www.buymeacoffee.com/politictech/wifi-privacy-with-wipri-any-linux-device
+#
 
 wpcmd="wipri -d wlan0 -p"	# Example command for boot, set on question during running
 wpservicefile='wipri.service'	# wipri.service file location for the boot section
@@ -32,6 +35,7 @@ echo "This will start a new uniquely generated identity (mac/hostname) for your 
 read -p "Start a new disinfo identity at each boot (yes/no)?: " boot
 if [ $boot == yes ]; then
 
+    echo "(the following question below can use commands from wipri or wipri-list adding them to boot)"
     read -p "What wipri mac address command would you like to start at boot? (ex: wipri -d wlan0 -p): " wpcmd
     sed -i "13s/.*/ExecStart=$wpcmd/" $wpservicefile
     sed -i "14s/.*/ExecReload=killall -9 wipri;$wpcmd/" $wpservicefile
