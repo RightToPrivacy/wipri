@@ -1,0 +1,103 @@
+#!/bin/bash
+#
+# wipri-list - saved/trusted list mode
+#
+# Why this? Many asked for it. People like to recognize their machines.
+#
+# Public Blog/Support options: https://buymeacoffee.com/politictech
+# email righttoprivacy[at]tutanota.com
+#
+
+# COLORS
+export BLUE='\033[1;94m'
+export GREEN='\033[1;92m'
+export RED='\033[1;91m'
+export ENDCOLOR='\033[1;00m'
+
+# VARIABLES
+macfile='/etc/wipri/maclist'	# current mac list file
+oui_file='/etc/wipri/phone.OUI' # OUI file - default is phones - change to any OUI list
+netdev="wlan0"			# default value for wifi card
+checktime='.5'			# time between checks
+newmac=""			# variable for the new mac in each setting
+
+# checks current mac address to be sure firmware didn't change it/crash/set back mac;
+# when device is detected to have wrong mac, immediately sets our valid OUI random addr
+maccheck() {
+	while : 
+	do
+		curmac=$(cat /sys/class/net/$netdev/address)
+		sleep .25
+		if [ "$curmac" != "$newmac" ]; then
+			echo "Sys MAC addr chang detected. Fixing!"
+			ip link set dev $netdev down;ip link set dev $netdev address $newmac;ip link set dev $netdev up;
+		fi
+		sleep $checktime
+	done
+}
+
+
+# SHOW MAC ADDRESS LIST AND CHOOSE
+macList() {
+	cat $macfile && sleep .5
+	#read -p "What mac address command would you like to start at boot? (ex: wipri -d wlan0 -p): " wpcmd
+	#sed -i "13s/.*/ExecStart=$wpcmd/" $wpservicefile
+}
+
+# CREATE AND ADD NEW MAC TO LIST
+macAdd() {
+        hexchar="abcdef0123456789"
+        beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
+        end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+        mac=$beg$end
+        /bin/echo -e "$BLUE Created And Added MAC: $RED$mac$ENDCOLOR"
+        #ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+        echo ""
+	echo $mac >> $macfile
+	echo "$mac has been added to our Onion Memory"
+}
+
+
+while getopts ":d:alr:s" arg; do
+	case $arg in
+
+    # SET NETWORK DEVICE FOR MAC CHANGES - ALWAYS USE -d FLAG
+    d)
+	netdev=${OPTARG}
+	echo "device chosen: ${RED}$netdev${ENDCOLOR}"
+      ;;
+
+    # GENERATE AND ADD NEW RANDOM BUT VALID OUI MAC TO OUR LIST
+    a)
+	macAdd
+      ;;
+
+    # DISPLAY CURRENT MAC LIST
+    l)
+        echo -e "Recalling mac address list"
+	cat $macfile
+      ;;
+
+    # REMOVE SPECIFIC MAC FROM OUR CURRENT LIST
+    r)
+	remmac=${OPTARG} 
+        echo -e "Removing ${RED}$remmac${ENDCOLOR} from our list"
+	sed -e s/$remmac//g -i $macfile && sleep .5
+	sed -i '/^$/d' $macfile
+	echo "Updated File:"
+        cat $macfile
+      ;;
+
+    # SELECT RANDOMLY CHOSEN MAC FROM OUR LIST AND SET IT WITH MAC LEAK PROTECTION
+    s)
+	echo -e "Selecting Random MAC From Our Listfile..." && sleep .5
+	newmac=$(shuf -n 1 $macfile)
+	echo -e "MAC selected: $newmac\n"
+	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+	maccheck
+	echo -e "* MAC Checking ${GREEN}Enabled${ENDCOLOR} To Prevent Leaks *\n"
+	echo -e "If installed at boot check with ${BLUE}sudo systemctl status wipri${ENDCOLOR}\n"
+      ;;
+
+	esac
+done
