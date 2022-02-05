@@ -6,7 +6,8 @@
 
 [Without disconnecting you from the internet]
 
-
+#### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc
+##### Have a great idea? file an issue or contact me! Or edit the code yourself and if it makes enough sense, I will merge!
 
 * Privacy For Our Ethical Human Rights *
 
