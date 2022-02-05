@@ -94,8 +94,6 @@ Blog Mirror: https://politictech.wordpress.com]
 
 CashApp: https://cash.app/$HumanRightsTech
 
-XMR:481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
-
 
 ### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
 
