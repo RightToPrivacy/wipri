@@ -2,7 +2,17 @@
 #
 # wipri-list - saved/trusted list mode
 #
-# Why this? Many asked for it. People like to recognize their machines.
+# Why this? Many asked for it. People like to recognize machines on network.
+# This can also be helpful where more than one machine carries same default hardware address (mac)
+#
+# You can use this to create valid yet random OUI mac address lists + use them
+#
+# USAGE: 
+# wipri-list -d eth0 -s                 # this selects/sets random from list
+# (if no device is selected after -d, wlan0 is default)
+# wipri-list -a                         # generates and adds new valid mac to list
+# wipri-list -l                         # show our current list of mac addresses
+# wipri-list -r 00:00:00:00:00:00       # remove 00:00:00:00:00:00 from list
 #
 # Public Blog/Support options: https://buymeacoffee.com/politictech
 # email righttoprivacy[at]tutanota.com
