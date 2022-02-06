@@ -7,12 +7,11 @@
 #
 #--------------------------------------------
 #
-# SUPPORT FUTURE/CURRENT PUBLIC INTEREST WORKS:
+# SUPPORT:
 #
-# BTC: 3QDdTcLwLTPXKMBp5dLUhKJG6KbDxWsYWS
-# XMR:481wHzXEsW9E519uu3SiynMuGe1yUT43iiJ8M49fgxfngHr9MUPVNAmPgyjS4XYtvzD1TbK7P5ywUWhGo11ibT2RQhEcRSX
+# Support Options Listed Here: https://buymeacoffee.com/politictech (+ public blog + more)
 # CashApp: https://cash.app/$HumanRightsTech
-# https://www.buymeacoffee.com/politictech (Read my public blog posts, help me to a coffee (if you like)) 
+# https://www.buymeacoffee.com/politictech/posts  public blog posts, help to a coffee (if you like)) 
 #
 #---------------------------------------------
 #
@@ -110,15 +109,12 @@ cat << "EOF"
                    \___)=(___/'                                                  
 
 
- ▄█     █▄   ▄█     ▄███████▄    ▄████████  ▄█  
-███     ███ ███    ███    ███   ███    ███ ███  
-███     ███ ███▌   ███    ███   ███    ███ ███▌ 
-███     ███ ███▌   ███    ███  ▄███▄▄▄▄██▀ ███▌ 
-███     ███ ███▌ ▀█████████▀  ▀▀███▀▀▀▀▀   ███▌ 
-███     ███ ███    ███        ▀███████████ ███  
-███ ▄█▄ ███ ███    ███          ███    ███ ███  
- ▀███▀███▀  █▀    ▄████▀        ███    ███ █▀   
-                                ███    ███   
+       ██╗    ██╗██╗██████╗ ██████╗ ██╗
+       ██║    ██║██║██╔══██╗██╔══██╗██║
+       ██║ █╗ ██║██║██████╔╝██████╔╝██║   
+       ██║███╗██║██║██╔═══╝ ██╔══██╗██║   
+       ╚███╔███╔╝██║██║     ██║  ██║██║   
+        ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝ 
 
 EOF
 
@@ -257,7 +253,7 @@ namebase4="xfinitywifi"
 
 
 # If setting nc (netcat) notify set "off" disregard below
-ncnotify="on"			# Turn on or off netcat name change notification
+ncnotify="off"			# Turn on or off netcat name change notification
 ncport="60821"			# port to send name changes
 ncprotocol="tcp"		# netcat protocol [udp/tcp]
 ncserver="192.168.42.38"	# netcat server to notify each name change (static ip/name)
@@ -305,7 +301,7 @@ netname() {
 
 # Notify server of new name changes [Work in progress- set the $ncnotify variable above to 'yes' or 'no' to turn off]
 notify() {
-        if [ $ncnotify == "on" ]; then
+        if [ $ncnotify == "off" ]; then
                 echo -n $randname >>/dev/$ncprotocol/$ncserver/$ncport
         fi
 }
@@ -431,18 +427,8 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	# can (depending on environment/trackers) simulate movement [EXPERIMENTAL]
 	# DISCLAIMER: be sure not to exceed any local regulations for tx
      s)
-	echo -e "$BLUE signal variation (experimental): $RED ON $ENDCOLOR"
-	while :
-	do
-		rando=$((RANDOM%$hightime+$lowtime))
-	  	randtx=$((RANDOM%$hightx+$lowtx))
-		sleep 1
-		signaljumper
-		echo -e "$BLUE $netdev tx power is now: $RED $randtx"
-		echo -e "$BLUE for $RED$rando sec"
-		sleep $rando
-	done
-	;;
+	signaljumper
+        ;;
 
 	# Randomize WiFi Network Name (SSID)
 	# Set additional flags if you would like to set simultaneous random mac
