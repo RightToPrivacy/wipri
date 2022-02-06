@@ -15,6 +15,7 @@ wpservicefile='wipri.service'	# wipri.service file location for the boot section
 echo "Creating /etc/wipri directory..."
 sudo mkdir /etc/wipri
 sleep .5
+sudo touch /etc/wipri/maclist
 echo "Copying OUI files into /etc/wipri..."
 sudo cp final.OUI /etc/wipri
 sudo cp phone.OUI /etc/wipri
@@ -50,5 +51,5 @@ if [ $boot == yes ]; then
     echo "To stop/disable issue at boot: systemctl stop wipri && systemctl disable wipri."
     echo "Enjoy your right to privacy [Declared a basic right in United Nations Declaration Of Human Rights]."
 else 
-    "You did not select 'yes' for starting at boot. Thus we are exiting. wipri installed as command only."
+    echo "You did not select 'yes' for starting at boot. Thus we are exiting. wipri installed as command only."
 fi
