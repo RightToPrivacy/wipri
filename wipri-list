@@ -2,7 +2,7 @@
 #
 # wipri-list - saved/trusted list mode
 #
-# Why this? Many asked for it. People like to recognize machines on network.
+# Why this? People like to recognize machines on network and there was interest.
 # This can also be helpful where more than one machine carries same default hardware address (mac)
 #
 # You can use this to create valid yet random OUI mac address lists + use them
@@ -22,16 +22,48 @@
 export BLUE='\033[1;94m'
 export GREEN='\033[1;92m'
 export RED='\033[1;91m'
+export WHITE='\033[0;37m'
 export ENDCOLOR='\033[1;00m'
+
 
 # VARIABLES
 macfile='/etc/wipri/maclist'	# current mac list file
 oui_file='/etc/wipri/phone.OUI' # OUI file - default is phones - change to any OUI list
-netdev="wlan0"			# default value for wifi card
+netdev="wlan0"			# default value for wifi or ethernet card (not all cards allow mac changes)
 checktime='.5'			# time between checks
 newmac=""			# variable for the new mac in each setting
 
-# checks current mac address to be sure firmware didn't change it/crash/set back mac;
+echo -e "\n"
+cat << "EOF"
+██╗    ██╗██╗██████╗ ██████╗ ██╗      ██╗     ██╗███████╗████████╗
+██║    ██║██║██╔══██╗██╔══██╗██║      ██║     ██║██╔════╝╚══██╔══╝
+██║ █╗ ██║██║██████╔╝██████╔╝██║█████╗██║     ██║███████╗   ██║   
+██║███╗██║██║██╔═══╝ ██╔══██╗██║╚════╝██║     ██║╚════██║   ██║   
+╚███╔███╔╝██║██║     ██║  ██║██║      ███████╗██║███████║   ██║   
+ ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝      ╚══════╝╚═╝╚══════╝   ╚═╝   
+                                                                  
+Public Blog/Tutorials: https://buymeacoffee.com/politictech
+EOF
+
+sleep .5
+
+echo "" && sleep .2
+echo -e "$WHITE Example:$ENDCOLOR wipri-list -a"
+echo -e "${BLUE}[Above]${ENDCOLOR} generates ${RED}NEW${ENDCOLOR} valid OUI mac address adding it to our file"
+echo "" && sleep .2
+echo -e "${WHITE}Example:${ENDCOLOR} wipri-list -d eth0 -s"
+echo -e "${BLUE}[Above]${ENDCOLOR} selects random address from list - MUST first use -a to add mac addresses]${ENDCOLOR}"
+echo -e "Run wipri-list -a \e[1;5m at least once \e[0m to begin creating your mac address list (or single mac)"
+echo "" && sleep .2
+echo -e "$WHITE Example:${ENDCOLOR} wipri-list -l"
+echo -e "${BLUE}[Above]${ENDCOLOR} lists current mac addresses from our list${ENDCOLOR}"
+echo "" && sleep .2
+echo -e "$WHITE Example:$ENDCOLOR wipri-list -r fe:ed:de:ad:be:ef"
+echo -e "${BLUE}[Above]${ENDCOLOR} removes ${RED}fe:ed:de:ad:be:ef${ENDCOLOR} from our list"
+echo "" && sleep .2
+
+
+# concept I created to check current mac address to be sure firmware didn't change it/crash/set back mac;
 # when device is detected to have wrong mac, immediately sets our valid OUI random addr
 maccheck() {
 	while : 
@@ -74,7 +106,7 @@ while getopts ":d:alr:s" arg; do
     # SET NETWORK DEVICE FOR MAC CHANGES - ALWAYS USE -d FLAG
     d)
 	netdev=${OPTARG}
-	echo "device chosen: ${RED}$netdev${ENDCOLOR}"
+	echo -e "Device chosen: ${RED}$netdev${ENDCOLOR}\n"
       ;;
 
     # GENERATE AND ADD NEW RANDOM BUT VALID OUI MAC TO OUR LIST
