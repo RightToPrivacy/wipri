@@ -139,7 +139,7 @@ echo "-R [restore prev hostname]"
 echo "-s [random signals]"
 echo "-A [generic randomized WiFi SSID (AP)]"
 echo "-H help"
-echo -e "$BLUE To see multiple examples/descriptions see: $WHITE wifi -H $RESETCOLOR"
+echo -e "${BLUE} To see multiple examples/descriptions see:${ENDCOLOR} ${WHITE} wifi -H ${ENDCOLOR}"
 echo ""
 
 # VARIABLES
@@ -196,7 +196,7 @@ function macrand {
 	beg=$(shuf -n 1 $oui_file)      # $oui_file contains important info to generate valid random macs: ma>
 	end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
 	mac=$beg$end
-	/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+	/bin/echo -e "$BLUE Changing MAC to:${ENDCOLOR} $RED$mac$ENDCOLOR"
 	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
     	echo ""
 }
@@ -208,7 +208,7 @@ function phmacrand {
 	beg=$(shuf -n 1 $phoui_file)      # $phoui_file contains important info to generate valid random phone macs
     	end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
     	mac=$beg$end
-    	/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
+    	/bin/echo -e "$BLUE Changing MAC to:${ENDCOLOR} $RED$mac$ENDCOLOR"
     	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
     	echo ""
 }
@@ -474,14 +474,14 @@ while getopts ":d:apPrm:ihRsAH" arg; do
        	echo -e "$BLUE [Above] continuously changing: randomized [wlan0] MAC addresses + hostnames $ENDCOLOR"
 	echo -e "$BLUE + signal randomization, each changing at the same time, continually; $ENDCOLOR"
 	echo "" && sleep .2
-        echo -e "$WHITE Example #7:$ENDCOLOR wipri -d wlan0 -P -s"
+        echo -e "$WHITE Example #7:${ENDCOLOR} wipri -d wlan0 -P -s"
         echo -e "$BLUE [Above] sets wlan0 continuously changing times/smartphone MAC identities; -s adds txpower changes [on]"
         echo "" && sleep .2
-        echo -e "$WHITE Example #8:$ENDCOLOR wipri -d wlan0 -p"
+        echo -e "$WHITE Example #8:${ENDCOLOR} wipri -d wlan0 -p"
         echo -e "$BLUE [Above] sets wlan0 to single random smartphone MAC identity"
         echo "" && sleep .2
-        echo -e "$WHITE Example #3:$ENDCOLOR wipri -d wlan0 -A"
-        echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)"
+        echo -e "$WHITE Example #3:${ENDCOLOR} wipri -d wlan0 -A"
+        echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
         echo "" && sleep .2
 
 
