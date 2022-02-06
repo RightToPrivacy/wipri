@@ -135,7 +135,7 @@ while getopts ":d:alr:s" arg; do
 	echo -e "Selecting Random MAC From Our Listfile..." && sleep .5
 	newmac=$(shuf -n 1 $macfile)
 	echo -e "MAC selected: $newmac\n"
-	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+	ip link set dev $netdev down;ip link set dev $netdev address $newmac;ip link set dev $netdev up;
 	maccheck
 	echo -e "* MAC Checking ${GREEN}Enabled${ENDCOLOR} To Prevent Leaks *\n"
 	echo -e "If installed at boot check with ${BLUE}sudo systemctl status wipri${ENDCOLOR}\n"
