@@ -21,9 +21,11 @@ sudo cp phone.OUI /etc/wipri
 sleep .5
 echo "Copying wipri executable to /usr/bin/wipri for command access..."
 sudo cp wipri /usr/bin/wipri
+sudo cp wipri-list /usr/bin/wipri-list
 sleep .5
 echo "Making wipri an executable command..."
 chmod +x /usr/bin/wipri
+chmod +x /usr/bin/wipri-list
 sleep .5
 echo "We are done installing the command!"
 echo ""
