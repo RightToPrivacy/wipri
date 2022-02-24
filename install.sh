@@ -26,9 +26,10 @@ sudo cp wipri-list /usr/bin/wipri-list
 sleep .5
 echo "Making wipri an executable command..."
 chmod +x /usr/bin/wipri
-chmod +x /usr/bin/wipri-list
+chmod +x /usr/bin/wipri-list 
 sleep .5
-echo "We are done installing the command!"
+echo -e "We are done installing the command!\n" && sleep .5
+wipri-list -a > /dev/null
 echo ""
 echo "Simply type wipri -H (as root) or sudo wipri -H to receive help."
 echo ""
