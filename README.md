@@ -16,6 +16,8 @@ Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/20
 
 ***NEW: WiFi Access point randomize option (can be installed for boot via install script, or used on demand as wipri command: wipri -d wlan0 -p -A (sets random/valid OUI mac address of Apple/Samsung + simultaneously changes network name/SSID restarting hostapd).
 
+#### Latest Updates to WiPri first appear on Wipri's Tor Hidden Service Gitea Git Service: http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
+
 ### USE:
 
 wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat notification of new names- add ip address to $ncnotify]
