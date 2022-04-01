@@ -137,6 +137,7 @@ echo "-i [rand (valid) MAC identity]"
 echo "-h [rand hostname]"
 echo "-R [restore prev hostname]"
 echo "-s [random signals]"
+echo "-S [continual changing random signal strengths, continually changing random time periods]"
 echo "-A [generic randomized WiFi SSID (AP)]"
 echo "-H help"
 echo -e "${BLUE} To see multiple examples/descriptions see:${ENDCOLOR} ${WHITE} wifi -H ${ENDCOLOR}"
@@ -147,16 +148,17 @@ checktime=".5"				# seconds between mac addr checks: lower = more frequent check
 hightime="600"				# Make this number higher if you want randomization times longer
 lowtime="300"				# Make this number lower to lower min time randomized
 rando=$((RANDOM%$hightime+$lowtime))	# Create Random time
-turnipv6="off"				# default is ipv6 off- change to "on" if you do NOT want to disable ipv6
+kernmit="on"				# Turn on to mitigate kernel (warning: passes changes to kernel)
 oui_file='/etc/wipri/final.OUI'		# Valid OUI list required for verifiable MAC addresses
 phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
 
-# ipv6 disable - mac address can be derived from ipv6 address/privacy issues
-# You will need to make system modifications for permanent change
-if [ $turnipv6 == "off" ]; then
-	sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
-    	sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
-	sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
+# WiPri mitigation kern
+if [ $kernmit == "on" ]; then
+	sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
+    	sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
+	sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
+	sudo sysctl -w net.ipv4.tcp_timestamps=0 >/dev/null
+	sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
 fi
 
 # Hostname randomization - generic yet completely random hostname generation
@@ -374,7 +376,6 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	do
 		rando=$((RANDOM%$hightime+$lowtime))
 		macrand
-		#sleep .5 attempting speedup of start
 		# maccheck # TBC
 		/bin/echo -e "$BLUE Changing MAC to: $RED$mac$ENDCOLOR"
            	/bin/echo -e "$BLUE next changes: random times, random addresses in: $RED $rando$BLUE sec$ENDCOLOR"
@@ -427,10 +428,15 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	# can (depending on environment/trackers) simulate movement [EXPERIMENTAL]
 	# DISCLAIMER: be sure not to exceed any local regulations for tx
      s)
-	signaljumper
-        ;;
+	while :
+	do
+        	signaljumper
+		sleep $rando	
+	done
+	;;
 
 	# Randomize WiFi Network Name (SSID)
+	# (If interested, see netcat notification closer to top of wipri)
 	# Set additional flags if you would like to set simultaneous random mac
      A)
         netname
