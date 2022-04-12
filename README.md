@@ -88,10 +88,11 @@ wipri w/optional new identity changes for each boot. Wipri disables ipv6 by defa
 $turnipv6 variable to 'on'.
 
 
-##### SUPPORT (if you like):
+### ❤️ SUPPORT (if you like):
 
+MONERO: 48qtspi5En44mJZLeiMoHYFEmuJfQYb5DLQxLDr7d1NXc53XaAvoT8PS3wBrhEc3VY1wxu5Rgw6oKBYgahpSAYnpHntbQNM
 
-https://www.buymeacoffee.com/politictech (current BTC address, public Tutorials/Blog posts and option to donate a coffee if you feel up to it; also extras) 		
+☕ https://www.buymeacoffee.com/politictech (current BTC address, public Tutorials/Blog posts, donate a coffee if you feel up to it; also extras) 		
 
 Blog Mirror: https://politictech.wordpress.com
 
