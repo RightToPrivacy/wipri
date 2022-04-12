@@ -30,8 +30,18 @@ export ENDCOLOR='\033[1;00m'
 macfile='/etc/wipri/maclist'	# current mac list file
 oui_file='/etc/wipri/phone.OUI' # OUI file - default is phones - change to any OUI list
 netdev="wlan0"			# default value for wifi or ethernet card (not all cards allow mac changes)
+kern="off"                   	# wipri kern
 checktime='.5'			# time between checks
 newmac=""			# variable for the new mac in each setting
+
+if [ $kern == "off" ]; then
+        sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
+        sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
+        sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
+        sudo sysctl -w net.ipv4.tcp_timestamps=0 >/dev/null
+        sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
+fi
+
 
 echo -e "\n"
 cat << "EOF"
@@ -42,7 +52,8 @@ cat << "EOF"
 ╚███╔███╔╝██║██║     ██║  ██║██║      ███████╗██║███████║   ██║   
  ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝      ╚══════╝╚═╝╚══════╝   ╚═╝   
                                                                   
-Public Blog/Tutorials: https://buymeacoffee.com/politictech
+Public Blog/Tutorials + More: https://buymeacoffee.com/politictech
+
 EOF
 
 sleep .5
