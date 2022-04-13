@@ -9,6 +9,10 @@
 #### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc
 ##### Have a great idea? file an issue or contact me! Or edit the code yourself and if it makes enough sense, I will merge!
 
+#### UPDATING WIPRI: Download the latest here or at Gitea Onion (address below) and re-run the install.sh to overwrite your old wipri with new features!
+
+##### Gitea Onion (Latest Always Here First: Main Repository): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+
 * Privacy For Our Ethical Human Rights *
 
 Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
