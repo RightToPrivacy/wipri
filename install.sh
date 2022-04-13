@@ -29,9 +29,13 @@ chmod +x /usr/bin/wipri
 chmod +x /usr/bin/wipri-list 
 sleep .5
 echo -e "We are done installing the command!\n" && sleep .5
-wipri-list -a > /dev/null
+echo -e "Now creating first wipri-list mac address..." && sleep .5
+sudo wipri-list -a || echo "failed to create first wipri-list mac. Run wipri-list -a after install to create manually..." && sleep .5 #> /dev/null
+echo -e "wipri-list has first quasi-permanent mac address option" && sleep .5
+echo -e "wipri-list is a new optional command for either single mac address or as many as you make in the list\n" && sleep .5
+echo -e "Running command wipri-list will display examples...\n continuing install..." && sleep .5
 echo ""
-echo "Simply type wipri -H (as root) or sudo wipri -H to receive help."
+echo "Simply type wipri -H to receive help."
 echo ""
 sleep .25
 echo "Would you like to additionally have wipri change your identity at boot (systemd)?"
