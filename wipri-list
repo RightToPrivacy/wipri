@@ -30,7 +30,7 @@ export ENDCOLOR='\033[1;00m'
 macfile='/etc/wipri/maclist'	# current mac list file
 oui_file='/etc/wipri/phone.OUI' # OUI file - default is phones - change to any OUI list
 netdev="wlan0"			# default value for wifi or ethernet card (not all cards allow mac changes)
-kern="off"                   	# wipri kern
+kern="off"                   	# wipri kern mitigations
 checktime='.5'			# time between checks
 newmac=""			# variable for the new mac in each setting
 

@@ -1,0 +1,43 @@
+# Contents of /etc/systemd/system/wipri.service
+# This is an example file used for adding 2nd service for wipri for ethernet
+#
+# Instructions to use this file:
+#
+# 1.) Install wipri either as command or boot (for wifi for example)
+# 2.) Edit this file to change flag (-i is all brands) and eth0 to your ethernet device (eth0 most common)
+# 3.) Copy this wipri-eth0.service file using command below:
+# sudo cp wipri-eth0.service /etc/systemd/system/wipri-eth0.service
+# 4.) Run the following commands to load and enable eth0 randomization at boot:
+#  sudo systemctl daemon-reload
+#  sudo systemctl enable wipri-eth0.service
+# 5.) Now next time you boot, your eth0 device should be using wipri!
+#
+# STOP WIPRI ETHERNET SERVICE: sudo systemctl stop wipri-eth0
+# DISABLE WIPRI ETHERNET SERVICE: sudo systemctl disable wipri-eth0
+#
+# DISABLING wipri-eth0 will prevent it from starting next boot.
+# If you have problems, follow above command to STOP wipri-eth0 to end process
+#
+# Have fun! 
+# righttoprivacy[at]tutanota.com
+# Tutorials / Support: https://buymeacoffee.com/politictech
+#
+
+[Unit]
+Description=WiPri eth0 Privacy Enhancement
+# Change mac
+Before=basic.target
+After=boot.mount
+DefaultDependencies=no
+
+# Feel free to change wipri commands below to meet your needs/wants
+[Service]
+Type=simple
+ExecStart=wipri -d eth0 -i
+ExecReload=killall -9 wipri;wipri -d eth0 -i
+ExecStop=killall -9 wipri
+Restart=on-failure
+RemainAfterExit=no
+
+[Install]
+WantedBy=basic.target

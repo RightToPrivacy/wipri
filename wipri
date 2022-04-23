@@ -148,7 +148,7 @@ checktime=".5"				# seconds between mac addr checks: lower = more frequent check
 hightime="600"				# Make this number higher if you want randomization times longer
 lowtime="300"				# Make this number lower to lower min time randomized
 rando=$((RANDOM%$hightime+$lowtime))	# Create Random time
-kernmit="on"				# Turn on to mitigate kernel (warning: passes changes to kernel)
+kernmit="on"				# Turn on to mitigate kernel (warning: passes changes to kernel) - it's optional
 oui_file='/etc/wipri/final.OUI'		# Valid OUI list required for verifiable MAC addresses
 phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
 
@@ -172,21 +172,26 @@ function hostn {
 	array[4]="Owner-iPhone" 
 	array[5]="PC" 
 	array[6]="Toshiba"
-	groupnum=$[ $RANDOM % 7 ]
+	array[7]="WORKGROUP"
+	array[8]="macbook"
+	array[9]="mac"
+	array[10]="phone"
+	groupnum=$[ $RANDOM % 11 ]
 	hostbase=${array[$groupnum]}
-
-	if [ $hostbase == "localhost" ]; then
-        	hostnamectl set-hostname localhost
-        	echo -e "$BLUE hostname is $RED'localhost'$ENDCOLOR, $BLUE a fine generic Linux hostname. $ENDCOLOR"
-    		elif [ $hostbase == "My-iPhone" ]; then
-        	randhostname="My-iPhone"
-        	hostnamectl set-hostname My-iPhone
-        	/bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR $RED My-iPhone $ENDCOLOR"
-    	elif [ $hostbase != "localhost" ]; then
-        	randhostname="$hostbase-$RANDOM"
-        	hostnamectl set-hostname $randhostname
-        	/bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
-	fi
+	hostnamectl set-hostname $hostbase
+### Below commented out for now
+#	if [ $hostbase == "localhost" ]; then
+#       	hostnamectl set-hostname localhost
+#        	echo -e "$BLUE hostname is $RED'localhost'$ENDCOLOR, $BLUE a fine generic Linux hostname. $ENDCOLOR"
+#    		elif [ $hostbase == "My-iPhone" ]; then
+#        	randhostname="My-iPhone"
+#        	hostnamectl set-hostname My-iPhone
+#        	/bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR $RED My-iPhone $ENDCOLOR"
+#    	elif [ $hostbase != "localhost" ]; then
+#        	randhostname="$hostbase-$RANDOM"
+#        	hostnamectl set-hostname $randhostname
+#        	/bin/echo -e "$BLUE Hostname (logged by router/network) is now $ENDCOLOR$RED$randhostname $ENDCOLOR"
+#	fi
 
 	dhclient -r $netdev
 	dhclient $netdev
