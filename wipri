@@ -122,7 +122,7 @@ echo -e "[ $WHITE MAC/Hostname/TX Randomizer $ENDCOLOR ] $BLUE LAN/WiFi Device P
 echo ""
 echo -e "$BLUE concept/code: $ENDCOLOR  $RED righttoprivacy@tutanota.com $ENDCOLOR"
 echo ""
-echo -e "$WHITE ----------------------------------------------------------- $ENDCOLOR"
+echo -e "${WHITE} ----------------------------------------------------------- ${ENDCOLOR}"
 echo -e "$BLUE Detected Devices: $ENDCOLOR"
 nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p' || echo "$RED nmcli not found:$ENDCOLOR $BLUEdon't worry, it was optional.$ENDCOLOR"
 echo -e "$BLUE Usage: $ENDCOLOR"
@@ -161,10 +161,20 @@ if [ $kernmit == "on" ]; then
 	sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
 fi
 
-# Hostname randomization - generic yet completely random hostname generation
+# Hostname randomization - generic yet random hostname chosen
 # Feel free to edit these arrays: keep in mind defaults are named strategically for a random yet generic base
+
+echo -e "${BLUE}Checking For Saved Hostname File...${ENDCOLOR}"
+if [ -f /etc/wipri/hostname.saved ]; then
+        echo -e "${GREEN}Hostname File Exists.${ENDCOLOR}"
+else
+	echo $HOSTNAME > /etc/wipri/hostname.saved	
+	echo "Original Hostname Saved. Use -R to restore"
+fi
+
+
 function hostn {
-	echo -e "ORG_HOSTNAME=$HOSTNAME" > '/etc/wipri/hostname.saved'     # Saving original hostname for easy -R flag restore
+
     	array[0]="localhost" 
     	array[1]="laptop" 
     	array[2]="computer" 
@@ -179,7 +189,7 @@ function hostn {
 	groupnum=$[ $RANDOM % 11 ]
 	hostbase=${array[$groupnum]}
 	hostnamectl set-hostname $hostbase
-### Below commented out for now
+### Below commented out for now - reverted back to more generic as this was 2yr ago (better blending in)
 #	if [ $hostbase == "localhost" ]; then
 #       	hostnamectl set-hostname localhost
 #        	echo -e "$BLUE hostname is $RED'localhost'$ENDCOLOR, $BLUE a fine generic Linux hostname. $ENDCOLOR"
@@ -415,15 +425,17 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	# Restore your previous MAC address [must have first used -h to save address]
      R)
 	if [ ! -f /etc/wipri/hostname.saved ]; then
-		echo -e "$RED ERROR! Previously saved hostname does NOT exist! \007"
+		echo -e "$RED ERROR! Previously saved hostname does NOT exist!" >> /dev/stderr 
 		sleep .5
 		echo ""
-		echo -e "Did you ever use -h [required to store hostname for restore] \007?"
 	else
-	       	/etc/wipri/hostname.saved
-	       	hostnamectl set-hostname $ORG_HOSTNAME
-	       	echo -e " $GREEN*$BLUE Hostname restored to $ORG_HOSTNAME\n"
-	       	rm /etc/wipri/hostname.saved
+		ORG_HOSTNAME=$(</etc/wipri/hostname.saved)
+		hostnamectl set-hostname $ORG_HOSTNAME
+		dhclient -r $netdev
+	       	dhclient $netdev
+		echo -e " $GREEN*$BLUE Hostname restored to $ORG_HOSTNAME\n"
+		sleep .5	
+		rm /etc/wipri/hostname.saved
 	fi
 	;;
 
@@ -443,7 +455,10 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	# Randomize WiFi Network Name (SSID)
 	# (If interested, see netcat notification closer to top of wipri)
 	# Set additional flags if you would like to set simultaneous random mac
-     A)
+	### SSID randomization is super experimental/"just for fun", and offers netcat notification
+	### It's not meant to be convenient. It's one option for testing and not all hostapd accesspoints
+	### May be compatible with your system.
+	A)
         netname
         sed -i "3s/.*/ssid=$randname/" $hostapdconf
         # TIP: include a wipri static mac flag to simultaneously change :)
