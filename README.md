@@ -6,7 +6,8 @@
 
 [Without disconnecting you from the internet]
 
-#### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc
+#### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc (you can install single 'quasi-perm' mac by choosing wipri-list command on the install.sh question (it's easy and install.sh creates your first mac!)
+
 ##### Have a great idea? file an issue or contact me! Or edit the code yourself and if it makes enough sense, I will merge!
 
 #### UPDATING WIPRI: Download the latest here or at Gitea Onion (address below) and re-run the install.sh to overwrite your old wipri with new features!
@@ -61,6 +62,7 @@ First if deciding to install to start at boot (option), edit the wipri flags in 
 
 sudo bash install.sh
 
+(install.sh will run and install files where they need to be. Next, install.sh asks if you would like wipri to run automatically at boot (early to prevent any leaks). And you can choose whatever wipri or wipri-list command you would like to run at boot.)
 
 That's it. wipri is now installed as a command. install.sh gives the additional option of starting itself at boot
 if you answer 'yes' to the question of installing as a systemd service. By default the systemd service will start
@@ -70,6 +72,16 @@ Do not forget to include -d [devicename] when issuing commands.
 
 Tip: if you decide to try the newer -A wifi access point randomize, pair with your choice of static mac flags to create new WiFi network (prevents static databasing such as Wigle)
 	For the above random ssid option I added optional netcat notification and will expand on this later. Post a question if you have one.
+	
+	
+DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
+
+
+### Disabling WiPri Boot (Once installed) Is Very Easy:
+
+    sudo systemctl stop wipri    (this stops current wipri process in systemd)
+    sudo systemctl disable wipri (this DISABLES WIPRI from next boot - use 'enable' to re-enable)
+
 
 
 ### Additional Info:
