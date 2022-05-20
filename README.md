@@ -15,26 +15,35 @@
 
 ##### Have great ideas you want to see? file an issue or contact me!
 
+---
+
 #### UPDATING WIPRI: IS SIMPLE! 
 
     Download latest wipri here or at Gitea Onion (address below)
     
     re-run the install.sh, to overwrite your old wipri with new features!
-
-##### Gitea Onion (Latest Always Here First: Main Repository): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+    
+---
 
 * Privacy For Our Ethical Human Rights *
+
+---
 
 Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
 
 + Learn More + About WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
 
+---
+
 #### Latest WiPri Updates first appear on Wipri's Tor Hidden Gitea Service (create an acct to make or contrib your own Wiki's, books, anon access, etc!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
+
+---
 
 ### USE:
 
     wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
 
+---
 
 ### Features:
 
@@ -62,6 +71,8 @@ Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/20
 
     -A WiFi Access Point Randomize: generates a generic yet completely random SSID Network Name and restarts hostapd with this new SSID. Tip: Pair with wipri's static mac settings (i, p, m) to create a new network.
 	[for -A above, a netcat notification is optional; be sure to check variables and change $ncnotify variable value to 'on' or 'off': may add flag for this in an update]
+	
+---
 
 ### Quick Start: Automate Installation + Boot / Command Option By Running install.sh
 
@@ -78,10 +89,12 @@ install.sh offers the additional option of starting a wipri or wipri-list flag /
 
 Do not forget to include -d [devicename] when issuing commands.
 
+---
 
 Tip: if you decide to try the newer -A wifi access point randomize, pair with your choice of static mac flags to create new WiFi network (prevents static databasing such as Wigle)
 For the above random ssid option I added optional netcat notification and will expand on this later. Post a question if you have one.
 	
+---
 	
 DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
 
@@ -91,6 +104,7 @@ DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
     sudo systemctl stop wipri    (this stops current wipri process in systemd)
     sudo systemctl disable wipri (this DISABLES WIPRI from next boot - use 'enable' to re-enable)
 
+---
 
 ### Additional Info:
 
@@ -99,6 +113,7 @@ wipri generated mac addresses use valid OUI's (unlike many mac randomizations). 
 If using a Linux phone / device, I suggest selecting -p for home, -P for out. To mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
 For even more broad randomization use -r for continuously changing randomization at continuously changing randomized times (all brands) or -i for static random mac identity
 
+---
 
 ### Why does wipri use valid OUI's?
 
@@ -118,10 +133,11 @@ I understand the WHY behind this method. But personally don't want to follow it 
 
 If the permanent OUI is being used, and logged, how might this become a risk of linking the 'spoofed' to the permanent (same REAL hardware OUI - narrows it down quite a bit)
 
-I layout concerns here: https://youtu.be/291uohokEOQ?t=166
+I layout concerns here on some of why I chose what I did for WiPri: https://youtu.be/291uohokEOQ?t=166
 
+---
 
-### ❤️ TUTORIALS + SUPPORT + PUBLIC SERVICES:
+### ❤️ TUTORIALS + SUPPORT:
 
 ☕ READ TUTORIALS / BUY ME A COFFEE: https://buymeacoffee.com/politictech (+ current btc addy, most posts completely public or will become public)
 
@@ -131,12 +147,17 @@ I layout concerns here: https://youtu.be/291uohokEOQ?t=166
 
 📝 TUTORIAL POSTS: https://buymeacoffee.com/politictech/posts
 
+---
+
+### PUBLIC SERVERS
+
 GITEA ONION (ANONYMOUS GIT SERVICE: ADD YOUR PROJECTS OR CONTRIBUTE!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/explore/repos
 
 📝 Blog Mirror: https://politictech.wordpress.com (see https://buymeacoffee.com/politictech/posts for organized category posts + searchable titles)
 
 🔐 💾 ANON PASTEBIN (PRIVATEBIN 🧅 TOR SERVICE): http://ikgybpx6kltqcnox3tv3zhw7zw3ig7f3jfjo6ypojpmoys7q4hcf2gid.onion/paste/ ('burn after reading', self destruct options, AES 256bit encrypted "zero knowledge-snark" (not even host can read pastes), password protection. For Community Use (ethical usage only)
 
+---
 
 ### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
 
@@ -153,6 +174,10 @@ BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
 
 BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
+---
+
 
 #### CONTACT / INQUIRY
 <righttoprivacy[at]tutanota.com>
+
+---
