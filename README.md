@@ -1,4 +1,4 @@
-### wipri (WiFi Privacy)
+### wipri (WiFi Privacy) - Privacy Disinfo Tool
 
 
 ### WIFi Device/MAC/Device Metadata Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
@@ -9,7 +9,7 @@
 ##### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
 ##### (you can install single 'quasi-perm' mac by choosing wipri-list -s command as your answer on initial install.sh 'boot' question (it's easy and install.sh automatically creates your first valid mac address in wipri-list's list during first run!)
 
-##### Have a great idea? file an issue or contact me! Or edit the code yourself and if it makes enough sense, I will merge!
+##### Have great ideas you want to see? file an issue or contact me!
 
 #### UPDATING WIPRI: Download the latest here or at Gitea Onion (address below) and re-run the install.sh, to overwrite your old wipri with new features!
 
@@ -19,10 +19,7 @@
 
 Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
 
-
-***NEW: WiFi Access point randomize option (can be installed for boot via install script, or used on demand as wipri command: wipri -d wlan0 -p -A (sets random/valid OUI mac address of Apple/Samsung + simultaneously changes network name/SSID restarting hostapd).
-
-#### Latest Updates to WiPri first appear on Wipri's Tor Hidden Service Gitea Git Service: http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
+#### Latest WiPri Updates first appear on Wipri's Tor Hidden Gitea Service (create an acct to make or contrib your own Wiki's, books, anon access, etc!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
 
 ### USE:
 
@@ -56,18 +53,19 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 -A WiFi Access Point Randomize: generates a generic yet completely random SSID Network Name and restarts hostapd with this new SSID. Tip: Pair with wipri's static mac settings (i, p, m) to create a new network.
 	[for -A above, a netcat notification is optional; be sure to check variables and change $ncnotify variable value to 'on' or 'off': may add flag for this in an update]
 
-### Simple Setup/Installation for new wipri command on Linux:
+### Quick Start: Automate Installation + Boot / Command Option By Running install.sh
 
-First if deciding to install to start at boot (option), edit the wipri flags in wipri.service to your liking. 
+    sudo bash install.sh
 
+(install.sh will install files exactly where they need to be. 
 
-sudo bash install.sh
+Next, install.sh asks if you would like wipri to run automatically at boot (early to prevent any leaks). And you can choose whatever wipri or wipri-list command you would like to run at boot.)
 
-(install.sh will run and install files where they need to be. Next, install.sh asks if you would like wipri to run automatically at boot (early to prevent any leaks). And you can choose whatever wipri or wipri-list command you would like to run at boot.)
+That's it. wipri is now installed as a command. 
 
-That's it. wipri is now installed as a command. install.sh gives the additional option of starting itself at boot
-if you answer 'yes' to the question of installing as a systemd service. By default the systemd service will start
-a new mac identity on each boot. You can change this by editing the wipri.service file.
+install.sh offers the additional option of starting a wipri or wipri-list flag / command at boot
+(if you answer 'yes' to the question of installing as a systemd service). 
+
 Do not forget to include -d [devicename] when issuing commands.
 
 
@@ -89,14 +87,15 @@ DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
 
 wipri generated mac addresses use valid OUI's (unlike many mac randomizations). See below for why.
 
-If using a Pinephone I suggest selecting -p for home, -P for out. To mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
+If using a Linux phone / device, I suggest selecting -p for home, -P for out. To mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
 For even more broad randomization use -r for continuously changing randomization at continuously changing randomized times (all brands) or -i for static random mac identity
 
 
 ### Why does wipri use valid OUI's?
 
 One documented method of tracking down a devices' 'real mac address' includes
-cancelling/striking out all mac addresses with an invalid/nonexistent OUI preface.
+cancelling/striking out all mac addresses with an invalid/nonexistent OUI preface (common problem with other built in mac randomization options).
+
 From here one can narrow down from false OUI's. Wipri avoids this issue by using OUI lists (all brands).
 wipri is argument/flag based, to more easily allow you to incorporate wipri commands into scripts.
 Run wipri command anytime you need privacy or (optionally) or use the install.sh script to install
@@ -104,10 +103,18 @@ wipri w/optional new identity changes for each boot. Wipri disables ipv6 by defa
 (ipv6 addresses at times are based on mac address) If you do not wish to disable ipv6, change value of 
 $turnipv6 variable to 'on'.
 
+Another concern I've had with some other mac address randomization options is the commonly used "keep the real OUI".
+
+I understand the WHY behind this method. But personally don't want to follow it for my own devices. Example: what if in the history of a device, your new install were to leak the permanent mac somewhere?
+
+If the permanent OUI is being used, and logged, how might this become a risk of linking the 'spoofed' to the permanent (same REAL hardware OUI - narrows it down quite a bit)
+
+I layout concerns here: https://youtu.be/291uohokEOQ?t=166
+
 
 ### ❤️ TUTORIALS + SUPPORT + PUBLIC SERVICES:
 
-☕ READ TUTORIALS / DONATE ME A COFFEE: https://buymeacoffee.com/politictech (+ current btc addy, most posts completely public or will become public)
+☕ READ TUTORIALS / BUY ME A COFFEE: https://buymeacoffee.com/politictech (+ current btc addy, most posts completely public or will become public)
 
 ❤️ MONERO: 48qtspi5En44mJZLeiMoHYFEmuJfQYb5DLQxLDr7d1NXc53XaAvoT8PS3wBrhEc3VY1wxu5Rgw6oKBYgahpSAYnpHntbQNM
 
@@ -115,7 +122,7 @@ $turnipv6 variable to 'on'.
 
 📝 TUTORIAL POSTS: https://buymeacoffee.com/politictech/posts
 
-GITEA ONION (PRIVACY GIT SERVICE: ADD YOUR OWN PROJECTS OR CONTRIBUTE!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/explore/repos
+GITEA ONION (ANONYMOUS GIT SERVICE: ADD YOUR PROJECTS OR CONTRIBUTE!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/explore/repos
 
 📝 Blog Mirror: https://politictech.wordpress.com (see https://buymeacoffee.com/politictech/posts for organized category posts + searchable titles)
 
@@ -138,5 +145,5 @@ BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
 BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
 
-
+CONTACT / INQUIRY
 <righttoprivacy[at]tutanota.com>
