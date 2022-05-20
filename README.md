@@ -11,15 +11,23 @@
 ##### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
 ##### (you can install single 'quasi-perm' mac by choosing wipri-list -s command as your answer on initial install.sh 'boot' question (it's easy and install.sh automatically creates your first valid mac address in wipri-list's list during first run!)
 
+---
+
 ##### Have great ideas you want to see? file an issue or contact me!
 
-#### UPDATING WIPRI: Download the latest here or at Gitea Onion (address below) and re-run the install.sh, to overwrite your old wipri with new features!
+#### UPDATING WIPRI: IS SIMPLE! 
+
+    Download latest wipri here or at Gitea Onion (address below)
+    
+    re-run the install.sh, to overwrite your old wipri with new features!
 
 ##### Gitea Onion (Latest Always Here First: Main Repository): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
 
 * Privacy For Our Ethical Human Rights *
 
 Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
+
++ Learn More + About WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
 
 #### Latest WiPri Updates first appear on Wipri's Tor Hidden Gitea Service (create an acct to make or contrib your own Wiki's, books, anon access, etc!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
 
