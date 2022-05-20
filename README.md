@@ -89,7 +89,7 @@ DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
 
 wipri generated mac addresses use valid OUI's (unlike many mac randomizations). See below for why.
 
-If using a Pinephone I suggest selecting -p for home, -P for out. This will mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
+If using a Pinephone I suggest selecting -p for home, -P for out. To mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
 For even more broad randomization use -r for continuously changing randomization at continuously changing randomized times (all brands) or -i for static random mac identity
 
 
@@ -105,15 +105,21 @@ wipri w/optional new identity changes for each boot. Wipri disables ipv6 by defa
 $turnipv6 variable to 'on'.
 
 
-### ❤️ SUPPORT (if you like):
+### ❤️ TUTORIALS + SUPPORT + PUBLIC SERVICES:
 
-MONERO: 48qtspi5En44mJZLeiMoHYFEmuJfQYb5DLQxLDr7d1NXc53XaAvoT8PS3wBrhEc3VY1wxu5Rgw6oKBYgahpSAYnpHntbQNM
+☕ READ TUTORIALS / DONATE ME A COFFEE: https://buymeacoffee.com/politictech (+ current btc addy, most posts completely public or will become public)
 
-☕ https://www.buymeacoffee.com/politictech (current BTC address, public Tutorials/Blog posts, donate a coffee if you feel up to it; also extras) 		
+❤️ MONERO: 48qtspi5En44mJZLeiMoHYFEmuJfQYb5DLQxLDr7d1NXc53XaAvoT8PS3wBrhEc3VY1wxu5Rgw6oKBYgahpSAYnpHntbQNM
 
-Blog Mirror: https://politictech.wordpress.com
+❤️ CashApp: https://cash.app/$HumanRightsTech
 
-CashApp: https://cash.app/$HumanRightsTech
+📝 TUTORIAL POSTS: https://buymeacoffee.com/politictech/posts
+
+GITEA ONION (PRIVACY GIT SERVICE: ADD YOUR OWN PROJECTS OR CONTRIBUTE!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/explore/repos
+
+📝 Blog Mirror: https://politictech.wordpress.com (see https://buymeacoffee.com/politictech/posts for organized category posts + searchable titles)
+
+🔐 💾 ANON PASTEBIN (PRIVATEBIN 🧅 TOR SERVICE): http://ikgybpx6kltqcnox3tv3zhw7zw3ig7f3jfjo6ypojpmoys7q4hcf2gid.onion/paste/ ('burn after reading', self destruct options, AES 256bit encrypted "zero knowledge-snark" (not even host can read pastes), password protection. For Community Use (ethical usage only)
 
 
 ### VIDEO CHANNELS (including guide to wipri, linux, sdr, more):
