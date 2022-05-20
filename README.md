@@ -1,19 +1,42 @@
-### wipri (WiFi Privacy) - Privacy Disinfo Tool
+### wipri (WiFi Privacy) - Privacy Disinfo Tool (as command and / or automated every boot!)
 
-
-### WIFi Device/MAC/Device Metadata Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy (derived from my previous maccleaner concept)
-
+### WIFi Device/MAC/Device Metadata Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy 
 
 [Without disconnecting you from the internet]
 
 ---
 
-##### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
-##### (you can install single 'quasi-perm' mac by choosing wipri-list -s command as your answer on initial install.sh 'boot' question (it's easy and install.sh automatically creates your first valid mac address in wipri-list's list during first run!)
+#### NOTE: You don't need to understand everything in this README to get started. It's simple. Just run the install.sh and answer the simple questions to let wipri take care of the install + startup
 
 ---
 
-##### Have great ideas you want to see? file an issue or contact me!
+* NEW * wipri-list (option) allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
+
+---
+
+#### wipri-list Command
+
+#### TIP: Want to install a single 'quasi-permanent' mac address on ethernet or wifi? Easy! Set this up as your wipri service automatically by running install.sh and choosing: wipri-list -s eth0 (replace eth0 with your device) command as your answer on initial install.sh 'boot' question.
+
+Above is easy. Running install.sh automatically creates the first wipri-list valid mac address, adding it to wipri-list's list (during install). 
+
+Since it automatically creates that first mac in your 'list', you could have it set a single quasi-perm mac address.
+
+This can help for those who want to 'spoof' their mac, but have a valid yet random 'permanent' mac address. For mac access lists in network, or simply to recognize your spoofed mac at all times.
+
+After this you can add additional mac addresses to your list anytime, by running wipri-list -a (to add new generated, valid OUI mac)
+
+And like I said, it's easy to automate this "set random mac from your wipri-list list" by answering install.sh running with wipri-list -s eth0 command.
+
+---
+
+Personal: It's up to you how you want to use it. I personally like setting permanent protective wipri service commands for wifi, and enjoy using wipri-list to maintain a quasi-perm ethernet mac (you can make it change every boot if you like, or keep recognized spoofed macs, generated automatically for you)
+
+If something isn't clear on usage, maybe have questions about wipri-list, leave a comment, or email.
+
+---
+
+#### Have great ideas you want to see? file an issue here, or contact me!
 
 ---
 
@@ -25,17 +48,17 @@
     
 ---
 
-* Privacy For Our Ethical Human Rights *
+* For Our Ethical Human Rights *
 
 ---
 
 Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
 
-+ Learn More + About WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
+Learn About Wireless privacy, WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
 
 ---
 
-#### Latest WiPri Updates first appear on Wipri's Tor Hidden Gitea Service (create an acct to make or contrib your own Wiki's, books, anon access, etc!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
+ Latest WiPri Updates appear on Wipri's Tor Hidden Gitea Service (contrib your own Wiki's, books): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
 
 ---
 
@@ -149,13 +172,15 @@ I layout concerns here on some of why I chose what I did for WiPri: https://yout
 
 ---
 
-### PUBLIC SERVERS
+### PUBLIC SERVERS / SERVICES TO PROTECT YOU
 
 GITEA ONION (ANONYMOUS GIT SERVICE: ADD YOUR PROJECTS OR CONTRIBUTE!): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/explore/repos
 
 📝 Blog Mirror: https://politictech.wordpress.com (see https://buymeacoffee.com/politictech/posts for organized category posts + searchable titles)
 
 🔐 💾 ANON PASTEBIN (PRIVATEBIN 🧅 TOR SERVICE): http://ikgybpx6kltqcnox3tv3zhw7zw3ig7f3jfjo6ypojpmoys7q4hcf2gid.onion/paste/ ('burn after reading', self destruct options, AES 256bit encrypted "zero knowledge-snark" (not even host can read pastes), password protection. For Community Use (ethical usage only)
+
+🤝 🎁 EXTRAS / SUPPORT: https://buymeacoffee.com/politictech/extras (download custom creations to help support this work: privacy linux "supporter images" like Pihole Adblocking Router img W/Rand Identifiers + RTPBOX "Privacybox" pi image: automated Nextcloud hid service + onion router + RPITX radio transmitter combo + consulting options + more)
 
 ---
 
