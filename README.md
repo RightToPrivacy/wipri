@@ -41,7 +41,7 @@ Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/20
 
 ### USE:
 
-    wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
+wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
 
 ---
 
