@@ -23,34 +23,34 @@ Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/20
 
 ### USE:
 
-wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC] -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat notification of new names- add ip address to $ncnotify]
+    wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
 
 
 ### Features:
 
--d sets your device.
+    -d sets your device.
 
--r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
+    -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
 
--p Android/iPhone mimic mode: sets single static identity: randomly generated valid mac address of either Apple or Android.
+    -p Android/iPhone mimic mode: sets single static identity: randomly generated valid mac address of either Apple or Android.
 
--P Android/iPhone mimic mode: continually changing randomized Samsung/Apple mac address changes- continually changing, at randomized changing times, using continually changing, randomized yet valid OUI Apple/Samsung mac addresses (this setting allows you to appear to WiFi trackers/sniffers [like KISMET] at any given time, as either an Android or iPhone;
+    -P Android/iPhone mimic mode: continually changing randomized Samsung/Apple mac address changes- continually changing, at randomized changing times, using continually changing, randomized yet valid OUI Apple/Samsung mac addresses (this setting allows you to appear to WiFi trackers/sniffers [like KISMET] at any given time, as either an Android or iPhone;
 
--m [mac here] sets a mac address of your choice, holds it for remainder of running (checks to ensure firmware does not reset it)
+    -m [mac here] sets a mac address of your choice, holds it for remainder of running (checks to ensure firmware does not reset it)
 
--h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
+    -h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
 
--R restore previously held hostname
+    -R restore previously held hostname
 
--H prints help; print out wipri command examples
+    -H prints help; print out wipri command examples
 
--i generates a valid OUI based mac identity
+    -i generates a valid OUI based mac identity
 
--s txpower randomizer (experimental) randomizes the txpower of your device. This confuses certain WiFI trackers that determine location by signal strength.
+    -s txpower randomizer (experimental) randomizes the txpower of your device. This confuses certain WiFI trackers that determine location by signal strength.
 
--a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices and changing locations. All 3 changes happen simultaneously, at changing, randomized times.
+    -a anonymous mode: launch coordinated random changes: each change happens simultaneously: when the mac address changes so does the hostname and txpower/signal. This is intended to simulate new devices and changing locations. All 3 changes happen simultaneously, at changing, randomized times.
 
--A WiFi Access Point Randomize: generates a generic yet completely random SSID Network Name and restarts hostapd with this new SSID. Tip: Pair with wipri's static mac settings (i, p, m) to create a new network.
+    -A WiFi Access Point Randomize: generates a generic yet completely random SSID Network Name and restarts hostapd with this new SSID. Tip: Pair with wipri's static mac settings (i, p, m) to create a new network.
 	[for -A above, a netcat notification is optional; be sure to check variables and change $ncnotify variable value to 'on' or 'off': may add flag for this in an update]
 
 ### Quick Start: Automate Installation + Boot / Command Option By Running install.sh
@@ -70,7 +70,7 @@ Do not forget to include -d [devicename] when issuing commands.
 
 
 Tip: if you decide to try the newer -A wifi access point randomize, pair with your choice of static mac flags to create new WiFi network (prevents static databasing such as Wigle)
-	For the above random ssid option I added optional netcat notification and will expand on this later. Post a question if you have one.
+For the above random ssid option I added optional netcat notification and will expand on this later. Post a question if you have one.
 	
 	
 DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
@@ -80,7 +80,6 @@ DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
 
     sudo systemctl stop wipri    (this stops current wipri process in systemd)
     sudo systemctl disable wipri (this DISABLES WIPRI from next boot - use 'enable' to re-enable)
-
 
 
 ### Additional Info:
@@ -145,5 +144,5 @@ BITCHUTE: https://www.bitchute.com/channel/yourprivacytv
 BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 
 
-CONTACT / INQUIRY
+#### CONTACT / INQUIRY
 <righttoprivacy[at]tutanota.com>
