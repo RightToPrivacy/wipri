@@ -2,27 +2,33 @@
 
 ### WIFi Device/MAC/Device Metadata Disinfo: Address Changer/Hostname randomizer/Device/Signal/location Privacy 
 
-[Without disconnecting you from the internet]
+[Without disconnecting from internet]
 
 ---
 
-#### NOTE: You don't need to understand everything in this README to get started. It's simple. Just run the install.sh and answer the simple questions to let wipri take care of the install + startup
+#### NOTE: You don't need to understand everything in README to get started. It's simple. 
+
+Just run the install.sh and answer the simple questions to let wipri take care of the install + startup for you.
 
 ---
 
-* NEW * wipri-list (option) allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
+* NEW * wipri-list (option) allows you to create random yet valid OUI lists (or single quasi-perm mac file!), flags to select at random a mac from list, set it, remove, generate new ones to list, etc. 
 
 ---
 
-#### wipri-list Command
+#### wipri-list Command: 
 
-#### TIP: Want to install a single 'quasi-permanent' mac address on ethernet or wifi? Easy! Set this up as your wipri service automatically by running install.sh and choosing: wipri-list -s eth0 (replace eth0 with your device) command as your answer on initial install.sh 'boot' question.
+TIP: Want a single 'quasi-permanent' mac address option for ethernet access control list (or wifi)? 
+
+Easy! 
+
+Set up wipri service automatically by running install.sh and choosing: wipri-list -s eth0 (replace eth0 with your device, be it wifi or ethernet) command as your answer on initial install.sh 'boot' question.
 
 Above is easy. Running install.sh automatically creates the first wipri-list valid mac address, adding it to wipri-list's list (during install). 
 
-Since it automatically creates that first mac in your 'list', you could have it set a single quasi-perm mac address.
+Since it automatically creates that first mac in your wipri-list 'list', you could leave it to create a single quasi-perm mac address service.
 
-This can help for those who want to 'spoof' their mac, but have a valid yet random 'permanent' mac address. For mac access lists in network, or simply to recognize your spoofed mac at all times.
+This can help for those who want to 'spoof' their mac, but wish to have a valid yet random 'permanent' mac address. Ideal for mac access lists (in network), or simply to recognize your mac at all times.
 
 After this you can add additional mac addresses to your list anytime, by running wipri-list -a (to add new generated, valid OUI mac)
 
@@ -30,13 +36,34 @@ And like I said, it's easy to automate this "set random mac from your wipri-list
 
 ---
 
-Personal: It's up to you how you want to use it. I personally like setting permanent protective wipri service commands for wifi, and enjoy using wipri-list to maintain a quasi-perm ethernet mac (you can make it change every boot if you like, or keep recognized spoofed macs, generated automatically for you)
+Personal: It's up to you how you want to use it. I personally like setting permanent protective wipri service commands for wifi, and enjoy wipri-list inside my wipri-eth0.service file to maintain a quasi-perm ethernet mac (you can make it change every boot if you like, or keep recognized spoofed macs, generated automatically for you)
 
-If something isn't clear on usage, maybe have questions about wipri-list, leave a comment, or email.
+I include an example wipri-eth0.service file for your convenience.
+
+#### BONUS Example wipri-eth0.service Ethernet File (create 2nd wipri service for ethernet)
+
+The example wipri-eth0.service file can be edited to use commands to your liking. 
+
+Once you are happy with the wipri related command flags and device name (eth0 in example for ethernet), you can then run following commands to activate the wipri-eth0.service file (to maintain quasi-perm mac address, or changing list at each boot for ethernet example)
+
+Activating Example wipri-eth0.service File (after running install.sh installs wipri):
+
+    sudo cp wipri-eth0.service /etc/systemd/system
+
+    sudo systemctl daemon-reload
+
+    sudo systemctl enable wipri-eth0.service   (this command will set it to start next boot)
+
+    sudo systemctl start wipri-eth0.service    (start newly added wipri ethernet service)
+
+
+Something Not Clear? 
+
+Questions about wipri, wipri-list, leave a comment, Or, Send An Email: righttoprivacy[at]tutanota
 
 ---
 
-#### Have great ideas you want to see? file an issue here, or contact me!
+#### Have A Unique / Great Ideas You Want To See? file an issue here, or contact me!
 
 ---
 
@@ -52,13 +79,13 @@ If something isn't clear on usage, maybe have questions about wipri-list, leave 
 
 ---
 
-Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
+    Learn More On Usage With Screenshots/video: https://politictech.wordpress.com/2021/12/18/wifi-privacy-with-wipri-any-linux-device/
 
-Learn About Wireless privacy, WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
+    Learn About Wireless privacy, WiPri + Why It Exists On This Video + diagram posts: https://www.buymeacoffee.com/politictech/wireless-privacy-tips-what-about-hearing-aids
 
 ---
 
- Latest WiPri Updates appear on Wipri's Tor Hidden Gitea Service (contrib your own Wiki's, books): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
+    Latest WiPri Updates appear on Wipri's Tor Hidden Gitea Service (contrib your own Wiki's, books): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri/ (view in Tor Browser)
 
 ---
 
@@ -101,9 +128,9 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
     sudo bash install.sh
 
-(install.sh will install files exactly where they need to be. 
-
 Next, install.sh asks if you would like wipri to run automatically at boot (early to prevent any leaks). And you can choose whatever wipri or wipri-list command you would like to run at boot.)
+
+(install.sh installs files exactly where they need to be)
 
 That's it. wipri is now installed as a command. 
 
@@ -202,7 +229,7 @@ BRANDNEWTUBE: https://brandnewtube.com/@RightToPrivacy​ (NEW)
 ---
 
 
-#### CONTACT / INQUIRY
+#### CONTACT / INQURE
 <righttoprivacy[at]tutanota.com>
 
 ---
