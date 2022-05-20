@@ -6,7 +6,8 @@
 
 [Without disconnecting you from the internet]
 
-#### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc (you can install single 'quasi-perm' mac by choosing wipri-list command on the install.sh question (it's easy and install.sh creates your first mac!)
+#### * NEW *: Thanks to popular request, wipri-list allows you to create random yet valid OUI lists, select random mac from this list and set it, remove etc 
+### (you can install single 'quasi-perm' mac by choosing wipri-list -s command as your answer on initial install.sh 'boot' question (it's easy and install.sh automatically creates your first valid mac address in wipri-list's list during first run!)
 
 ##### Have a great idea? file an issue or contact me! Or edit the code yourself and if it makes enough sense, I will merge!
 
