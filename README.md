@@ -12,6 +12,22 @@ Just run the install.sh and answer the simple questions to let wipri take care o
 
 ---
 
+#### GET STARTED QUICKLY (INSTALL TO BOOT PERSISTENCE SYSTEMD)
+
+    $ git clone https://github.com/RightToPrivacy/wipri.git
+
+    NEXT: cd into wipri folder (shell)
+
+    NEXT: Type out the following to run the installer script install.sh
+
+    $ sudo bash install.sh
+    
+    NEXT: It installs all files where needed, and you can select your choice of flags and devices
+    
+    EXAMPLE COMMAND TO OFFER INSTALL.sh: wipri -d wlan0 -p
+
+---
+
 * NEW * wipri-list (option) allows you to create random yet valid OUI lists (or single quasi-perm mac file!), flags to select at random a mac from list, set it, remove, generate new ones to list, etc. 
 
 ---
