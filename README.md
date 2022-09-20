@@ -4,7 +4,7 @@
 
 [Without disconnecting from internet]
 
-*MAIN REPOSITORY (LATEST UPDATES):* http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+**MAIN REPOSITORY (LATEST UPDATES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
 
 The above Gitea Onion location (Use either Tor Browser, or torify / Tails / Whonix) is the main location and is updated more often.
 
