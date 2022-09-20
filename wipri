@@ -262,9 +262,9 @@ function maccheck() {
 # feel free to mix up different flags to run things how you like (don't forget the -d flag to set dev)
 ### NOTICE: if you use this w flag, be aware it turns wifi radio off if you aren't connected for 3min - simply re-enable it if needed
 function watchdev() {
+	echo -e "${BLUE} Checking $netdev To Protect Against WiFi Saved SSID Probe Req Leaks${ENDCOLOR}\n"
 	while :
 	do
-		echo -e "${BLUE} Checking $netdev To Protect Against Saved SSID Leaks${ENDCOLOR}\n"
 		sleep 400									# time period to wait between checks
 		dstatus=$(cat /sys/class/net/$netdev/operstate)
 		if [ "$dstatus" != "up" ]; then
