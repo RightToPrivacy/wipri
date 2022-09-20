@@ -12,23 +12,13 @@ Just run the install.sh and answer the simple questions to let wipri take care o
 
 ---
 
-#### GET STARTED QUICKLY (INSTALL TO BOOT PERSISTENCE SYSTEMD)
-
-    $ git clone https://github.com/RightToPrivacy/wipri.git
-
-    NEXT: cd into wipri folder (shell)
-
-    NEXT: Type out the following to run the installer script install.sh
-
-    $ sudo bash install.sh
-    
-    NEXT: It installs all files where needed, and you can select your choice of flags and devices
-    
-    EXAMPLE COMMAND TO OFFER INSTALL.sh: wipri -d wlan0 -p
-
----
-
 * NEW * wipri-list (option) allows you to create random yet valid OUI lists (or single quasi-perm mac file!), flags to select at random a mac from list, set it, remove, generate new ones to list, etc. 
+
+* NEW * wipri-eth0.service, wipri-eth0-usb.service are additional example service files helping you manage multiple devices. Instructions provided within .service files
+
+* NEW * the -w flag (optional) allows you to leave home anytime and wipri will automatically turn off radio to prevent (potential) leaks once you are no longer within range of your saved networks (to prevent SSID leaks)
+
+(use the -w flag anytime, either by itself (always use -d flag to set device), or combined with other flags [like -p, -m, -r, -i, etc])
 
 ---
 
@@ -36,11 +26,11 @@ Just run the install.sh and answer the simple questions to let wipri take care o
 
 TIP: Want a single 'quasi-permanent' mac address option for ethernet access control list (or wifi)? 
 
-Easy! 
+Easy:
 
 Set up wipri service automatically by running install.sh and choosing: wipri-list -s eth0 (replace eth0 with your device, be it wifi or ethernet) command as your answer on initial install.sh 'boot' question.
 
-Above is easy. Running install.sh automatically creates the first wipri-list valid mac address, adding it to wipri-list's list (during install). 
+Running install.sh automatically creates the first wipri-list valid mac address, adding it to wipri-list's list (during install). 
 
 Since it automatically creates that first mac in your wipri-list 'list', you could leave it to create a single quasi-perm mac address service.
 
@@ -50,6 +40,8 @@ After this you can add additional mac addresses to your list anytime, by running
 
 And like I said, it's easy to automate this "set random mac from your wipri-list list" by answering install.sh running with wipri-list -s eth0 command.
 
+*Other Uses For wipri-list*: wipri-list will set a static single mac, if only one is on its list. If you add additional using -a, wipri-list will choose
+one inside the list at random each run, or boot (if you install it to use wipri-list at boot).*
 ---
 
 Personal: It's up to you how you want to use it. I personally like setting permanent protective wipri service commands for wifi, and enjoy wipri-list inside my wipri-eth0.service file to maintain a quasi-perm ethernet mac (you can make it change every boot if you like, or keep recognized spoofed macs, generated automatically for you)
@@ -62,7 +54,7 @@ The example wipri-eth0.service file can be edited to use commands to your liking
 
 Once you are happy with the wipri related command flags and device name (eth0 in example for ethernet), you can then run following commands to activate the wipri-eth0.service file (to maintain quasi-perm mac address, or changing list at each boot for ethernet example)
 
-Activating Example wipri-eth0.service File (after running install.sh installs wipri):
+Activating Example wipri-eth0.service / wipri-eth0-usb.service File (after running install.sh installs wipri):
 
     sudo cp wipri-eth0.service /etc/systemd/system
 
@@ -113,7 +105,9 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
 ### Features:
 
-    -d sets your device.
+    -d sets your device (use this flag always).
+
+    -w optional flag helps prevent SSID leaks (saved SSID's) - by watching wifi and turning radio off after 8min timeout (optional)
 
     -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
 
@@ -174,7 +168,7 @@ DISABLING WIPRI AT BOOT (IF YOU INSTALLED AND WISH TO STOP IT/DISABLE IT)
 
 ### Additional Info:
 
-wipri generated mac addresses use valid OUI's (unlike many mac randomizations). See below for why.
+wipri generated mac addresses use valid OUI's (unlike some mac randomizations). See below for why.
 
 If using a Linux phone / device, I suggest selecting -p for home, -P for out. To mimic an iPhone/Android phone: one of the most common devices around. -p for static (w/mac checking to prevent leaks), -P for continually changing Apple/Android mac at continuously changing times/mac addresses.
 For even more broad randomization use -r for continuously changing randomization at continuously changing randomized times (all brands) or -i for static random mac identity
@@ -195,17 +189,17 @@ $turnipv6 variable to 'on'.
 
 Another concern I've had with some other mac address randomization options is the commonly used "keep the real OUI".
 
-I understand the WHY behind this method. But personally don't want to follow it for my own devices. Example: what if in the history of a device, your new install were to leak the permanent mac somewhere?
+I understand the WHY behind this. Personally decided against for my own devices. Example: what if in the history of a device, your new install were to leak the permanent mac somewhere?
 
-If the permanent OUI is being used, and logged, how might this become a risk of linking the 'spoofed' to the permanent (same REAL hardware OUI - narrows it down quite a bit)
+If the permanent OUI were used, and logged, how might this become a risk of linking itself to the 'spoofed' to the permanent (same REAL hardware OUI - narrows it down quite a bit)
 
-I layout concerns here on some of why I chose what I did for WiPri: https://youtu.be/291uohokEOQ?t=166
+Some of the thought process behind wipri https://youtu.be/291uohokEOQ?t=166
 
 ---
 
-### ❤️ TUTORIALS + SUPPORT:
+### TUTORIALS + SUPPORT:
 
-☕ READ TUTORIALS / BUY ME A COFFEE: https://buymeacoffee.com/politictech (+ current btc addy, most posts completely public or will become public)
+☕ READ TUTORIALS / BUY ME A COFFEE: https://buymeacoffee.com/politictech
 
 ❤️ MONERO: 48qtspi5En44mJZLeiMoHYFEmuJfQYb5DLQxLDr7d1NXc53XaAvoT8PS3wBrhEc3VY1wxu5Rgw6oKBYgahpSAYnpHntbQNM
 
@@ -223,7 +217,7 @@ GITEA ONION (ANONYMOUS GIT SERVICE: ADD YOUR PROJECTS OR CONTRIBUTE!): http://gg
 
 🔐 💾 ANON PASTEBIN (PRIVATEBIN 🧅 TOR SERVICE): http://ikgybpx6kltqcnox3tv3zhw7zw3ig7f3jfjo6ypojpmoys7q4hcf2gid.onion/paste/ ('burn after reading', self destruct options, AES 256bit encrypted "zero knowledge-snark" (not even host can read pastes), password protection. For Community Use (ethical usage only)
 
-🤝 🎁 EXTRAS / SUPPORT: https://buymeacoffee.com/politictech/extras (download custom creations to help support this work: privacy linux "supporter images" like Pihole Adblocking Router img W/Rand Identifiers + RTPBOX "Privacybox" pi image: automated Nextcloud hid service + onion router + RPITX radio transmitter combo + consulting options + more)
+🤝 🎁 EXTRAS / SUPPORT: https://buymeacoffee.com/politictech/extras
 
 ---
 

@@ -1,21 +1,32 @@
 # Contents of /etc/systemd/system/wipri.service
+# This is an example file used for adding 2nd service for wipri for ethernet
+#
+# Instructions to use this file:
+#
+# Run install.sh to automatically install wipri either as command, or command + boot (for wifi dev as example)
+#
+# STOPPING OR DISABLING WIPRI AS A SERVICE (ie: BOOT):
+#
+# STOP WIPRI SERVICE: sudo systemctl stop wipri
+# DISABLE WIPRI SERVICE: sudo systemctl disable wipri
+#
+# Tutorials/Blog: https://buymeacoffee.com/politictech/posts
+#
+
 [Unit]
-Description=WiPri Meta/MAC/Privacy Enhancement
+Description=WiPri Privacy Enhancement
 # Change mac
-Before=basic.target
-After=boot.mount
+Before=boot.mount
 DefaultDependencies=no
 
 # Feel free to change wipri commands below to meet your needs/wants
-# install *WILL* use the commands below, edit as needed before running install.sh!
 [Service]
 Type=simple
-ExecStart=/usr/bin/wipri -d wlan0 -i
-ExecReload=killall -9 wipri;/usr/bin/wipri -d wlan0 -i
+ExecStart=wipri -d wlan0 -w -p
+ExecReload=killall -9 wipri;wipri -d wlan0 -w -p
 ExecStop=killall -9 wipri
 Restart=on-failure
 RemainAfterExit=no
-
 
 [Install]
 WantedBy=basic.target

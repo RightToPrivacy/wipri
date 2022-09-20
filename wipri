@@ -47,7 +47,7 @@
 #		(ie: -p, -i, -m)
 #
 # TIP #3: continuously changing both times/mac addr flags for travel privacy/movement
-#		(ie: -r, -P, -a)
+#		(ie: -r, -P, -a) (also -w flag to watch for disconnects and turn wifi off if not around saved net)
 #
 # TIP #4: If using -A for randomized SSID (hostapd), select a static mac randomization for simultaneous change to mimic new wifi network
 #
@@ -127,6 +127,7 @@ echo -e "$BLUE Detected Devices: $ENDCOLOR"
 nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p' || echo "$RED nmcli not found:$ENDCOLOR $BLUEdon't worry, it was optional.$ENDCOLOR"
 echo -e "$BLUE Usage: $ENDCOLOR"
 echo "wipri -d [device][any combination of below flags here]"
+echo "-w [turn off wifi radio when not connected for 2min] (can be used with other flags)"
 echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength at" 
 echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
 echo "-p [static smartphone mimic] Set single static Samsung/Apple MAC identity"
@@ -135,7 +136,7 @@ echo "-r [randomizes mac continually changing times/addresses]"
 echo "-m [Static MAC (Your Choice) Here]"
 echo "-i [rand (valid) MAC identity]"
 echo "-h [rand hostname]"
-echo "-R [restore prev hostname]"
+echo "-R [restore to original hostname]"
 echo "-s [random signals]"
 echo "-S [continual changing random signal strengths, continually changing random time periods]"
 echo "-A [generic randomized WiFi SSID (AP)]"
@@ -154,9 +155,9 @@ phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
 
 # WiPri mitigation kern
 if [ $kernmit == "on" ]; then
-	sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
-    	sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
-	sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
+	#sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
+    	#sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
+	#sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
 	sudo sysctl -w net.ipv4.tcp_timestamps=0 >/dev/null
 	sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
 fi
@@ -256,10 +257,26 @@ function maccheck() {
 	done
 }
 
+# w flag to mitigate wifi probe SSID leaks (seemed necessary - set it and forget it) ;)
+# This can be used in wipri command, or installed as wipri boot service
+# feel free to mix up different flags to run things how you like (don't forget the -d flag to set dev)
+### NOTICE: if you use this w flag, be aware it turns wifi radio off if you aren't connected for 3min - simply re-enable it if needed
+function watchdev() {
+	while :
+	do
+		echo -e "${BLUE} Checking $netdev For Down Status To Prevent Saved SSID Leaks${ENDCOLOR}\n"
+		sleep 400									# time period to wait between checks
+		dstatus=$(cat /sys/class/net/$netdev/operstate)
+		if [ "$dstatus" != "up" ]; then
+			echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT UP FOR TIMEOUT PERIOD...${ENDCOLOR}\n" && sleep .5
+			echo -e "${BLUE}Turning WiFi Radio $netdev ${RED}OFF${ENDCOLOR} to prevent WiFi Probe Req SSID leaks${ENDCOLOR}\n" && sleep .5
+			nmcli radio wifi off || echo -e "${RED}ERR FAILED TO DOWN${ENDCOLOR}\n" && exit			
+			echo -e "${GREEN}SUCCESSFULLY TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
+		fi
+	done
+}
 
-
-########## Begin access point stuff
-
+########## Begin access point stuff - experimental (for my own amusement at this time)
 
 # Base name for network changes 
 # *These are common in US: feel free to edit to match your area*
@@ -327,15 +344,22 @@ notify() {
 ########## End access point stuff
 
 # flags
-while getopts ":d:apPrm:ihRsAH" arg; do
+while getopts ":d:wapPrm:ihRsAH" arg; do
 	case $arg in
 
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
      d)
 	  netdev=${OPTARG}
 	  echo -e "device is $RED $netdev $ENDCOLOR" 
-	;;
+	  export netdev				  	  
+	  ;;
 
+	# watches device and if disconnected long enough, bring down to prev identifier leaks
+	# as mactrack python script demonstrated, saved SSID's and more can leak if not using this flag
+	# and these can be used to track saved wifi locations (mactrack script links to wigle lookups for demo)
+     w)
+     	watchdev &
+	;;
 
 	# Anonymous/private mode: continually changing MAC/hostname/signal strength
 	# coordinating all 3 options to happen simultaneously scheduled at
@@ -363,7 +387,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 
     # static phone mac mimic: generate/set single valid OUI (Apple/Android) based mac and hold it
      p)
-	echo -e "$BLUE new static random cellphone MAC identity (retained/checked to prevent leaks) $ENDCOLOR"
+	echo -e "${BLUE} new static random cellphone MAC identity (retained/checked to prevent leaks) ${ENDCOLOR}"
 	phmacrand
 	maccheck 
      ;;
@@ -494,7 +518,7 @@ while getopts ":d:apPrm:ihRsAH" arg; do
 	echo -e "$BLUE [Above] sets wlan1mon to new random MAC identity (static/single MAC) hostname/signal changes both [OFF]"
 	echo "" && sleep .2
 	echo -e "$WHITE Example #5:$ENDCOLOR wipri -R"
-	echo -e "$BLUE [Above] sets/reverts back to previous hostname: $RED NOTE: MUST HAVE USED -h PREVIOUSLY $ENDCOLOR"
+	echo -e "$BLUE [Above] sets/reverts back to original hostname: $RED NOTE: MUST HAVE USED -h PREVIOUSLY $ENDCOLOR"
 	echo "" && sleep .2
        	echo -e "$WHITE Example #6:$ENDCOLOR wipri -d wlan0 -a"
        	echo -e "$BLUE [Above] continuously changing: randomized [wlan0] MAC addresses + hostnames $ENDCOLOR"
@@ -506,9 +530,12 @@ while getopts ":d:apPrm:ihRsAH" arg; do
         echo -e "$WHITE Example #8:${ENDCOLOR} wipri -d wlan0 -p"
         echo -e "$BLUE [Above] sets wlan0 to single random smartphone MAC identity"
         echo "" && sleep .2
-        echo -e "$WHITE Example #3:${ENDCOLOR} wipri -d wlan0 -A"
+        echo -e "$WHITE Example #9:${ENDCOLOR} wipri -d wlan0 -A"
         echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
-        echo "" && sleep .2
+	echo "" && sleep .2
+	echo -e "${WHITE} Example #10:${ENDCOLOR} wipri -d wlan0 -w -p"
+	echo -e "${BLUE} [Above] sets wlan0 dev to both monitor for disconnects (turning wifi off then); until that time: static Apple/Android${ENDCOLOR}"
+	echo "" && sleep .2
 
 
 	echo -e "$WHITE For more details:$ENDCOLOR $RED README.md$ENDCOLOR"

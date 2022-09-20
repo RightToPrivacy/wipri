@@ -45,16 +45,17 @@ if [ $boot == yes ]; then
 
     echo "(the following question below can use commands from wipri or wipri-list adding them to boot)"
     read -p "What wipri mac address command would you like to start at boot? (ex: wipri -d wlan0 -p): " wpcmd
-    sed -i "13s/.*/ExecStart=$wpcmd/" $wpservicefile
-    sed -i "14s/.*/ExecReload=killall -9 wipri;$wpcmd/" $wpservicefile
+    sed -i "25s/.*/ExecStart=$wpcmd/" $wpservicefile
+    sed -i "26s/.*/ExecReload=killall -9 wipri;$wpcmd/" $wpservicefile
     cp wipri.service /etc/systemd/system/wipri.service
     systemctl daemon-reload
     systemctl enable wipri.service
-    systemctl start wipri.service
+    systemctl restart wipri.service
     echo "WiPri has now been started/added new identity at each boot." 
     echo "Remember not to run conflicting mac address changes at same time as each device only carries 1 mac address at a time!"
     echo "To stop/disable issue at boot: systemctl stop wipri && systemctl disable wipri."
     echo "Enjoy your right to privacy [Declared a basic right in United Nations Declaration Of Human Rights]."
 else 
     echo "You did not select 'yes' for starting at boot. Thus we are exiting. wipri installed as command only."
+    exit
 fi
