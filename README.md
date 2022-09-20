@@ -137,7 +137,7 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
     -h change hostname to generic yet unique and completely random hostname. Using a generic base with random extension at the end of it.
 
-    -R restore previously held hostname
+    -R restore hostname (first wipri run saves your hostname, this flag restores that hostname for you)
 
     -H prints help; print out wipri command examples
 
