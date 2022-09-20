@@ -264,13 +264,13 @@ function maccheck() {
 function watchdev() {
 	while :
 	do
-		echo -e "${BLUE} Checking $netdev For Down Status To Prevent Saved SSID Leaks${ENDCOLOR}\n"
+		echo -e "${BLUE} Checking $netdev To Protect Against Saved SSID Leaks${ENDCOLOR}\n"
 		sleep 400									# time period to wait between checks
 		dstatus=$(cat /sys/class/net/$netdev/operstate)
 		if [ "$dstatus" != "up" ]; then
-			echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT UP FOR TIMEOUT PERIOD...${ENDCOLOR}\n" && sleep .5
+			echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT UP...${ENDCOLOR}\n" && sleep .5
 			echo -e "${BLUE}Turning WiFi Radio $netdev ${RED}OFF${ENDCOLOR} to prevent WiFi Probe Req SSID leaks${ENDCOLOR}\n" && sleep .5
-			nmcli radio wifi off || echo -e "${RED}ERR FAILED TO DOWN${ENDCOLOR}\n" && exit			
+			nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO${ENDCOLOR}\n" && continue			
 			echo -e "${GREEN}SUCCESSFULLY TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
 		fi
 	done
