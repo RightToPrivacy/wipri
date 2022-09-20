@@ -4,11 +4,15 @@
 
 [Without disconnecting from internet]
 
-**MAIN REPOSITORY (LATEST UPDATES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+---
+
+**MAIN REPOSITORY (FOR LATEST UPDATES / FEATURES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
 
 Above Gitea Onion location is the best way to file issues (I check above daily, but am not on github as often) 
 
-(Use either Tor Browser, or torify / Tails / Whonix) is the main location and is updated more often.
+(Use Tor Browser, or torify / Tails / Whonix) is the main location and is updated more often.
+
+---
 
 #### REQUIREMENTS (AS OF THIS VERSION)
 
