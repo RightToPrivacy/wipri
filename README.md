@@ -4,6 +4,14 @@
 
 [Without disconnecting from internet]
 
+#### REQUIREMENTS (AS OF THIS VERSION)
+
+* wireless-tools (for the signal related flags)
+
+* systemd (only needed if you wish to automate custom flags starting at boot using install.sh)
+
+* nmcli (NetworkManager Cli is needed for -w flag)
+
 ---
 
 #### NOTE: You don't need to understand everything in README to get started. It's simple. 
