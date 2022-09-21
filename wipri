@@ -31,8 +31,8 @@
 # as another backup to prevent mac leaks (setting mac again when change detected from flag/choice). 
 # ***WARNING: do not attempt to run conflicting commands on same device at same time as devices carry a single mac at a time
 #
-# Ethical REDTEAM/Human Rights purposes;
-# Helping you lose those pesky advertising trackers/WiFi Beacon related;
+# Ethical Human Rights purposes;
+# Helping you lose pesky advertising trackers/WiFi Beacon related;
 # (Privacy: Declared a Universal Human Right under UN Dec Human Rights)
 #
 # NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
@@ -127,7 +127,7 @@ echo -e "$BLUE Detected Devices: $ENDCOLOR"
 nmcli dev status|awk '{print $1;}'| grep -v 'lo'| grep -v 'p2p' || echo "$RED nmcli not found:$ENDCOLOR $BLUEdon't worry, it was optional.$ENDCOLOR"
 echo -e "$BLUE Usage: $ENDCOLOR"
 echo "wipri -d [device][any combination of below flags here]"
-echo "-w [turn off wifi radio when not connected for 2min] (can be used with other flags)"
+echo "-w [turn off wifi radio when you leave home automatically after x min to prevent saved SSID tracking] (can be used with other flags)"
 echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength at" 
 echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
 echo "-p [static smartphone mimic] Set single static Samsung/Apple MAC identity"
@@ -534,7 +534,7 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
         echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
 	echo "" && sleep .2
 	echo -e "${WHITE} Example #10:${ENDCOLOR} wipri -d wlan0 -w -p"
-	echo -e "${BLUE} [Above] sets wlan0 dev to both monitor for disconnects (turning wifi off then); until that time: static Apple/Android${ENDCOLOR}"
+	echo -e "${BLUE} [Above] -w sets wlan0 dev to turn off wifi radio when not in range with saved networks preventing SSID probe req leak: -p: static Apple/Android${ENDCOLOR}"
 	echo "" && sleep .2
 
 
