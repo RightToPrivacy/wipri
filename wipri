@@ -534,7 +534,7 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
         echo -e "$BLUE [Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
 	echo "" && sleep .2
 	echo -e "${WHITE} Example #10:${ENDCOLOR} wipri -d wlan0 -w -p"
-	echo -e "${BLUE} [Above] -w sets wlan0 dev to turn off wifi radio when not in range with saved networks preventing SSID probe req leak: -p: static Apple/Android${ENDCOLOR}"
+	echo -e "${BLUE} [Above] -w sets wlan0 dev to turn off wifi radio when not in range with saved networks preventing SSID probe leak: -p: static Apple/Android${ENDCOLOR}"
 	echo "" && sleep .2
 
 

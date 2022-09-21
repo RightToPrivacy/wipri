@@ -36,7 +36,7 @@ Just run the install.sh and answer the simple questions to let wipri take care o
 
 * NEW * the -w flag (optional) allows you to leave home anytime and wipri will automatically turn off radio to prevent (potential) leaks once you are no longer within range of your saved networks (to prevent SSID leaks)
 
-(use the -w flag anytime, either by itself (always use -d flag to set device), or combined with other flags [like -p, -m, -r, -i, etc])
+(use the -w flag anytime (requires nmcli), either by itself (always use -d flag to set device), or combined with other flags [like -p, -m, -r, -i, etc])
 
 ---
 
@@ -125,7 +125,7 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
     -d sets your device (use this flag always).
 
-    -w optional flag helps prevent SSID leaks (saved SSID's) - by watching wifi and turning radio off after 8min timeout (optional)
+    -w optional flag helps prevent SSID leaks (saved SSID's) - by turning off wifi radio when you leave your network area (optional)
 
     -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
 
