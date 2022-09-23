@@ -242,8 +242,7 @@ function signaljumper() {
 	echo -e "$BLUE setting $netdev tx power: $RED $randtx"
 }
 
-# checks current mac address to be sure firmware didn't change it/crash/set back mac;
-# when device is detected to have wrong mac, immediately set back to our valid OUI random addr
+# prevent static flag leaks
 function maccheck() {
 	while : 
 	do
@@ -257,21 +256,22 @@ function maccheck() {
 	done
 }
 
-# w flag to mitigate wifi probe SSID leaks (seemed necessary - set it and forget it) ;)
-# This can be used in wipri command, or installed as wipri boot service
-# feel free to mix up different flags to run things how you like (don't forget the -d flag to set dev)
-### NOTICE: if you use this w flag, be aware it turns wifi radio off if you aren't connected for 3min - simply re-enable it if needed
+# for w
 function watchdev() {
 	echo -e "${BLUE} Checking $netdev To Protect Against WiFi Saved SSID Probe Req Leaks${ENDCOLOR}\n"
 	while :
 	do
-		sleep 400									# time period to wait between checks
+		sleep 400									# time period to check dev status 
 		dstatus=$(cat /sys/class/net/$netdev/operstate)
 		if [ "$dstatus" != "up" ]; then
-			echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT UP...${ENDCOLOR}\n" && sleep .5
-			echo -e "${BLUE}Turning WiFi Radio $netdev ${RED}OFF${ENDCOLOR} to prevent WiFi Probe Req SSID leaks${ENDCOLOR}\n" && sleep .5
-			nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO${ENDCOLOR}\n" && continue			
-			echo -e "${GREEN}SUCCESSFULLY TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
+			sleep 20
+			if ["$dstatus" != "up" ]; then
+				echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT CONNECTED...${ENDCOLOR}\n" && sleep .5
+				echo -e "${BLUE}Turning WiFi Radio $netdev${ENDCOLOR} ${RED}OFF${ENDCOLOR} to prevent WiFi Probe Req SSID leaks${ENDCOLOR}\n" && sleep .5
+				nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO${ENDCOLOR}\n"			
+				echo -e "${GREEN}SUCCESSFULLY TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
+			fi
+			continue 2
 		fi
 	done
 }
