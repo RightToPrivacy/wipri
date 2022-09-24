@@ -6,15 +6,19 @@
 
 ---
 
-**MAIN REPOSITORY (FOR LATEST UPDATES / FEATURES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+### **MAIN GIT REPOSITORY (FOR LATEST WIPRI UPDATES FIRST / FEATURES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
 
-Above Gitea Onion location is the best way to file issues (I check above daily, but am not on github as often) 
+Above Gitea Onion location is the best place to file issues (Gitea Onion is checked daily, not on github as often) 
+
+[ Gitea Onion is dedicated anonymous Git server respecting user anonymity ]
 
 (Use Tor Browser, or torify / Tails / Whonix) is the main location and is updated more often.
 
 ---
 
 #### REQUIREMENTS (AS OF THIS VERSION)
+
+LINUX DEVICE (with the following):
 
 * wireless-tools (for the signal related flags)
 
@@ -34,7 +38,7 @@ Just run the install.sh and answer the simple questions to let wipri take care o
 
 * NEW * wipri-eth0.service, wipri-eth0-usb.service are additional example service files helping you manage multiple devices. Instructions provided within .service files
 
-* NEW * the -w flag (optional) allows you to leave home anytime and wipri will automatically turn off radio to prevent (potential) leaks once you are no longer within range of your saved networks (to prevent SSID leaks)
+* NEW * -w flag (optional) to automatically turn off wifi radio when you get far away from your saved networks: to prevent saved SSID / identifier leaks
 
 (use the -w flag anytime (requires nmcli), either by itself (always use -d flag to set device), or combined with other flags [like -p, -m, -r, -i, etc])
 
@@ -117,7 +121,7 @@ Questions about wipri, wipri-list, leave a comment, Or, Send An Email: righttopr
 
 ### USE:
 
-wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
+wipri -d [device] -w [automatically turn wifi radio off anytime you leave home] -r [randomizes mac continually changing times/addresses] -a [continually randomize MAC, hostname, signal variations] -m [Static MAC]     -i [new MAC identity] -h [rand hostname] -H [restore prev hostname] -s [random signals] -A [randomized WiFi Network SSID Change: optional netcat           notification of new names- add ip address to $ncnotify]
 
 ---
 
@@ -125,7 +129,7 @@ wipri -d [device] -r [randomizes mac continually changing times/addresses] -a [c
 
     -d sets your device (use this flag always).
 
-    -w optional flag helps prevent SSID leaks (saved SSID's) - by turning off wifi radio when you leave your network area (optional)
+    -w turn wifi radio off when outside your home automatically to prevent saved SSID's and other identifer leaks
 
     -r continually randomizes your mac address at randomly generated, continually changing random MAC addresses/times.
 
