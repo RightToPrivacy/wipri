@@ -260,18 +260,18 @@ function maccheck() {
 function watchdev() {
 	while :
 	do
-		echo -e "${BLUE} Checking $netdev To Protect Against WiFi Saved SSID Probe Req Leaks${ENDCOLOR}\n"
-		sleep 400									# time period to check dev status 
+		sleep 400									# check time period
 		dstatus=$(cat /sys/class/net/$netdev/operstate)
 		if [ "$dstatus" != "up" ]; then
 			sleep 20
+			echo -e "${BLUE}$netdev STATUS CHECK${ENDCOLOR}\n"
 			if [ "$dstatus" != "up" ]; then
-				echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}NOT CONNECTED...${ENDCOLOR}\n" && sleep .5
-				echo -e "${BLUE}Turning WiFi Radio $netdev${ENDCOLOR} ${RED}OFF${ENDCOLOR} to prevent WiFi Probe Req SSID leaks${ENDCOLOR}\n" && sleep .5
+				echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}VERIFIED AWAY${ENDCOLOR}\n" && sleep .5
+				echo -e "${BLUE}TURNING $netdev RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR} ${BLUE}to prevent (WiFi Probe Req) SSID leaks${ENDCOLOR}\n" && sleep .5
 				nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO - requires nmcli${ENDCOLOR}\n"			
-				echo -e "${GREEN}SUCCESSFULLY TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
+				echo -e "${GREEN}TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
+				continue 2
 			fi
-			continue 2
 		fi
 	done
 }
