@@ -5,14 +5,21 @@
 #
 # Run wipri -H for help/examples (as well as tips below)
 #
+# Tested on Pinephone (Mobian, Arch/Manj, and Linux laptops and Tablets (Pinetab)
+# Should work on any Linux distro that has nmcli (networkmanager), wireless-tools (for signal related commands),
+# and for the automated boot install (optional): current version requires systemd (can be run as command for systems without systemd)
+#--------------------------------------------
+#
+# Happy to see / hear others finding this useful. Everyone is welcome to include wipri in 
+# anything they wish (1 distro asked about this). Please leave credit to creator as is, in turn will improve as long as remains useful..
+#
 #--------------------------------------------
 #
 # SUPPORT:
 #
-# Support Options Listed Here: https://buymeacoffee.com/politictech (+ public blog + more)
-# CashApp: https://cash.app/$HumanRightsTech
+# Support Options Listed Here (if you like to): https://buymeacoffee.com/politictech (+ public blog + more)
 # https://www.buymeacoffee.com/politictech/posts  public blog posts, help to a coffee (if you like)) 
-#
+# Sharing wipri with others is another way to support the effort here :)
 #---------------------------------------------
 #
 # SEE README.md FOR ADDITIONAL INFORMATION/LINKS
@@ -35,9 +42,7 @@
 # Helping you lose pesky advertising trackers/WiFi Beacon related;
 # (Privacy: Declared a Universal Human Right under UN Dec Human Rights)
 #
-# NOTE: disables ipv6 by default for multiple reasons: ipv6 address 
-# can derive MAC address; to disable feature change turnipv6 variable to "off"
-# [permanent disabling of ipv6 will need sys modification]
+# You can set it to disable IPV6 by unhashing the lines in kernmit function
 #
 # Tip #1: -a enables 3 changes to happen simultaneously to mimic new 
 # devices: changes random MAC addresses/hostnames/txpower signal strengths, 
@@ -55,19 +60,17 @@
 # variable low enough to do so within your countries regulations*
 #
 #---------------------------------------------------------------------
-# PLEASE FILE ISSUE ON REPOSITORY BELOW: OR LEAVE USAGE PROBLEM COMMENT ON VIDEO/BLOG
+# PLEASE FILE ISSUE ON GITEA ONION REPOSITORY BELOW: OR LEAVE USAGE PROBLEM COMMENT ON VIDEO/BLOG
 #
 #
 # DOWNLOADS/SCRIPTS/CODE:
-# Anonymous Code Host Tor .onion (Main): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri 
+# Anonymous Gitea Onion Tor .onion (Main): http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri 
 # Gitlab: https://gitlab.com/Aresesi - Repository (backup)
 # Github: https://github.com/righttoprivacy - Repository (backup)
-#
 #
 # SOCIAL MEDIA:
 # https://www.fosstodon.org/@RTP - Follow on Mastodon
 # https://twitter.com/tvprivacy - Follow on Twitter
-#
 #
 # VIDEO CHANNELS:
 #
@@ -161,6 +164,18 @@ if [ $kernmit == "on" ]; then
 	sudo sysctl -w net.ipv4.tcp_timestamps=0 >/dev/null
 	sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
 fi
+
+# machine-id randomization (regenerated) each wipri run
+# machine-id is a unique identifer that can (unnecessarily) be used for tracking
+# machine-id privacy concerns: https://lists.dyne.org/lurker/message/20190308.134955.e06f4b9c.en.html#dng
+echo -e "${RED}Removing Old machine-id To Prevent Tracking...${ENDCOLOR}"
+rm -f /var/lib/dbus/machine-id /etc/machine-id || {
+	echo -e "${RED}ERR! DOES MACHINE-ID FILE EXIST?${ENDCOLOR}\n" 
+	}
+echo -e "${BLUE}Generating New Unique machine-id...${ENDCOLOR}"
+dbus-uuidgen --ensure=/etc/machine-id && dbus-uuidgen --ensure && {
+	echo -e "${GREEN}New machine-id generated.${ENDCOLOR}"
+	}
 
 # Hostname randomization - generic yet random hostname chosen
 # Feel free to edit these arrays: keep in mind defaults are named strategically for a random yet generic base
@@ -268,6 +283,7 @@ function watchdev() {
 			if [ "$dstatus" != "up" ]; then
 				echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}VERIFIED AWAY${ENDCOLOR}\n" && sleep .5
 				echo -e "${BLUE}TURNING $netdev RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR} ${BLUE}to prevent (WiFi Probe Req) SSID leaks${ENDCOLOR}\n" && sleep .5
+				#rfkill block bluetooth			# delete the hash at beginning of line to turn off bluetooth as well
 				nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO - requires nmcli${ENDCOLOR}\n"			
 				echo -e "${GREEN}TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
 				continue 2
