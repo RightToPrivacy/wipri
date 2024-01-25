@@ -6,7 +6,9 @@
 
 ---
 
-### **MAIN GIT REPOSITORY (FOR LATEST WIPRI UPDATES FIRST / FEATURES):** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
+**wipri project is still active and latest has moved to dedicated private git server for the current moment (see below)**
+
+### **PROJECT MOVED TO:** http://gg6zxtreajiijztyy5g6bt5o6l3qu32nrg7eulyemlhxwwl6enk6ghad.onion/RightToPrivacy/WiPri
 
 Above Gitea Onion location is the best place to file issues (Gitea Onion is checked daily, not on github as often) 
 
