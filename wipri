@@ -82,10 +82,9 @@
 # e-mail: <righttoprivacy[at]tutanota.com> (private (ethical) consulting available upon request)
 # Free answers to questions in video/blog comments (maybe your question can help others!) :)
 #
-# BLOG:
+# BLOG / PUBLIC PRIVACY / SECURITY TUTORIALS:
 #
-# https://www.buymeacoffee.com/politictech/posts - Main Blog Posts/Extras (Public)
-# https://politictech.wordpress.com - Backup Blog
+# https://bmc.link/politictech/posts - Main Blog Posts/Extras (Public)
 #---------------------------------------------------------------------
 
 
@@ -135,6 +134,8 @@ echo "-a [anonymous/ghost mode: continuously change MAC/hostname/signal strength
 echo "   continuously changing [coordinated/simultaneous] times/addresses to mimic new devices"
 echo "-p [static smartphone mimic] Set single static Samsung/Apple MAC identity"
 echo "-P [changing smartphone mimics] continously changing Samsung/Apple at rand times/mac addr"
+echo "-M [random machine-id change] - unique identifier"
+echo "-b [block bluetooth] using rfkill"
 echo "-r [randomizes mac continually changing times/addresses]" 
 echo "-m [Static MAC (Your Choice) Here]"
 echo "-i [rand (valid) MAC identity]"
@@ -147,6 +148,7 @@ echo "-H help"
 echo -e "${BLUE} To see multiple examples/descriptions see:${ENDCOLOR} ${WHITE} wifi -H ${ENDCOLOR}"
 echo ""
 
+#####################################################
 # VARIABLES
 checktime=".5"				# seconds between mac addr checks: lower = more frequent checks
 hightime="600"				# Make this number higher if you want randomization times longer
@@ -156,45 +158,35 @@ kernmit="on"				# Turn on to mitigate kernel (warning: passes changes to kernel)
 oui_file='/etc/wipri/final.OUI'		# Valid OUI list required for verifiable MAC addresses
 phoui_file='/etc/wipri/phone.OUI' 	# phone OUI file
 
+#####################################################
 # WiPri mitigation kern
 if [ $kernmit == "on" ]; then
 	#sudo sysctl -w net.ipv6.conf.all.disable_ipv6=1 >/dev/null
-    	#sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
+	#sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1 >/dev/null
 	#sudo sysctl -w net.ipv6.conf.lo.disable_ipv6=1 >/dev/null
 	sudo sysctl -w net.ipv4.tcp_timestamps=0 >/dev/null
 	sudo sysctl -w net.ipv4.icmp_echo_ignore_all=1 >/dev/null
 fi
 
-# machine-id randomization (regenerated) each wipri run
-# machine-id is a unique identifer that can (unnecessarily) be used for tracking
-# machine-id privacy concerns: https://lists.dyne.org/lurker/message/20190308.134955.e06f4b9c.en.html#dng
-echo -e "${RED}Removing Old machine-id To Prevent Tracking...${ENDCOLOR}"
-rm -f /var/lib/dbus/machine-id /etc/machine-id || {
-	echo -e "${RED}ERR! DOES MACHINE-ID FILE EXIST?${ENDCOLOR}\n" 
-	}
-echo -e "${BLUE}Generating New Unique machine-id...${ENDCOLOR}"
-dbus-uuidgen --ensure=/etc/machine-id && dbus-uuidgen --ensure && {
-	echo -e "${GREEN}New machine-id generated.${ENDCOLOR}"
-	}
-
+#####################################################
 # Hostname randomization - generic yet random hostname chosen
 # Feel free to edit these arrays: keep in mind defaults are named strategically for a random yet generic base
 
 echo -e "${BLUE}Checking For Saved Hostname File...${ENDCOLOR}"
 if [ -f /etc/wipri/hostname.saved ]; then
-        echo -e "${GREEN}Hostname File Exists.${ENDCOLOR}"
+	echo -e "${GREEN}Hostname File Exists.${ENDCOLOR}"
 else
 	echo $HOSTNAME > /etc/wipri/hostname.saved	
 	echo "Original Hostname Saved. Use -R to restore"
 fi
 
-
+######################################################
 function hostn {
 
-    	array[0]="localhost" 
-    	array[1]="laptop" 
-    	array[2]="computer" 
-    	array[3]="DESKTOP" 
+	array[0]="localhost" 
+	array[1]="laptop" 
+	array[2]="computer" 
+	array[3]="DESKTOP" 
 	array[4]="Owner-iPhone" 
 	array[5]="PC" 
 	array[6]="Toshiba"
@@ -223,6 +215,7 @@ function hostn {
 	dhclient $netdev || echo -e "${RED}dhclient not found - OK we can still make due without it${ENDCOLOR}"
 }
 
+#######################################################
 # MAC randomization/setting
 function macrand {
 	hexchar="abcdef0123456789"
@@ -231,21 +224,22 @@ function macrand {
 	mac=$beg$end
 	/bin/echo -e "${BLUE}Changing MAC to:${ENDCOLOR} $RED$mac$ENDCOLOR"
 	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-    	echo ""
+	echo ""
 }
 
-
+#######################################################
 # MAC randomization (phone version- temp version)
 function phmacrand {
 	hexchar="abcdef0123456789"
 	beg=$(shuf -n 1 $phoui_file)      # $phoui_file contains important info to generate valid random phone macs
-    	end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
-    	mac=$beg$end
-    	/bin/echo -e "${BLUE}Changing MAC to:${ENDCOLOR} ${RED}$mac${ENDCOLOR}"
-    	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-    	echo ""
+	end=$( for i in {1..6} ; do echo -n ${hexchar:$(( $RANDOM % 16 )):1} ; done | sed -e 's/\(..\)/:\1/g' )
+	mac=$beg$end
+	/bin/echo -e "${BLUE}Changing MAC to:${ENDCOLOR} ${RED}$mac${ENDCOLOR}"
+	ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+	echo ""
 }
 
+########################################################
 # Signal TX strength randomization to confuse location trackers by signal strength (experimental)
 function signaljumper() {
 	hightx=30                      # WARNING: stay w/in bounds of tx regulations for your country
@@ -257,25 +251,27 @@ function signaljumper() {
 	echo -e "${BLUE} setting $netdev tx power:${ENDCOLOR} ${RED}$randtx${ENDCOLOR}"
 }
 
+########################################################
 # prevent static flag leaks
 function maccheck() {
 	while : 
 	do
-	    curmac=$(cat /sys/class/net/$netdev/address)
-	    sleep .25
-	    if [ "$curmac" != "$mac" ]; then
-	    	echo "Sys MAC addr chang detected. Fixing!"
-	        ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
-	    fi
-	    sleep $checktime
+		curmac=$(cat /sys/class/net/$netdev/address)
+		sleep .25
+		if [ "$curmac" != "$mac" ]; then
+			echo "Sys MAC addr chang detected. Fixing!"
+			ip link set dev $netdev down;ip link set dev $netdev address $mac;ip link set dev $netdev up;
+		fi
+		sleep $checktime
 	done
 }
 
+########################################################
 # for w  
 function watchdev() {
 	while :
 	do
-		sleep 400									# check time period
+		sleep 400	# check time period
 		dstatus=$(cat /sys/class/net/$netdev/operstate)
 		if [ "$dstatus" != "up" ]; then
 			sleep 20
@@ -283,7 +279,6 @@ function watchdev() {
 			if [ "$dstatus" != "up" ]; then
 				echo -e "${GREEN}$netdev${ENDCOLOR} ${RED}VERIFIED AWAY${ENDCOLOR}\n" && sleep .5
 				echo -e "${BLUE}TURNING $netdev RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR} ${BLUE}to prevent (WiFi Probe Req) SSID leaks${ENDCOLOR}\n" && sleep .5
-				#rfkill block bluetooth			# delete the hash at beginning of line to turn off bluetooth as well
 				nmcli radio wifi off || echo -e "${RED}ERR FAILED TO TURN OFF RADIO - requires nmcli${ENDCOLOR}\n"			
 				echo -e "${GREEN}TURNED WIFI RADIO${ENDCOLOR} ${RED}OFF${ENDCOLOR}"
 				continue 2
@@ -292,6 +287,7 @@ function watchdev() {
 	done
 }
 
+########################################################
 ########## Begin access point stuff - experimental (for my own amusement at this time)
 
 # Base name for network changes 
@@ -334,7 +330,7 @@ netname() {
 
 	# Randomizing (NETGEAR default: change $namebase1 value mods this)
 	elif [ $randname == "$namebase1" ]; then
-        	randname=$randname$RANDOM #| fold -w 10
+		randname=$randname$RANDOM #| fold -w 10
 
 	# Common US name (change $namebase4 variable value above to change)
 	elif [ $randname == "$namebase4" ]; then
@@ -348,37 +344,41 @@ netname() {
 
 }
 
-
+##########################################################
 # Notify server of new name changes [Work in progress- set the $ncnotify variable above to 'yes' or 'no' to turn off]
 notify() {
-        if [ $ncnotify == "off" ]; then
-                echo -n $randname >>/dev/$ncprotocol/$ncserver/$ncport
-        fi
+	if [ $ncnotify == "off" ]; then
+		echo -n $randname >>/dev/$ncprotocol/$ncserver/$ncport
+	fi
 }
 
 
-########## End access point stuff
+########## End [EXPERIMENTAL] access point stuff
 
+##########################################################
 # flags
-while getopts ":d:wapPrm:ihRsAH" arg; do
+while getopts ":d:wapPMbrm:ihRsAH" arg; do
 	case $arg in
 
+#####################################################################
 	# Device setting [-d devicename] [REQUIRED: with all MAC related functions]
      d)
-	  netdev=${OPTARG}
-	  echo -e "device is ${RED}$netdev${ENDCOLOR}" 
-	  export netdev				  	  
-	  ;;
+	netdev=${OPTARG}
+	echo -e "device is ${RED}$netdev${ENDCOLOR}" 
+	export netdev				  	  
+     ;;
 
+######################################################################
 	# watches device and if disconnected long enough, bring down to prev identifier leaks
 	# as mactrack python script demonstrated, saved SSID's and more can leak if not using this flag
 	# and these can be used to track saved wifi locations (mactrack script links to wigle lookups for demo)
      w)
-     	watchdev &
+	watchdev &
 	;;
 
-	# Anonymous/private mode: continually changing MAC/hostname/signal strength
-	# coordinating all 3 options to happen simultaneously scheduled at
+#######################################################################
+    # Anonymous/private mode: continually changing MAC/hostname/signal strength
+    # coordinating all 3 options to happen simultaneously scheduled at
     # continually changing randomized time periods
      a)
 	echo -e "${BLUE}WiPri Anonymous mode starting...${ENDCOLOR}"
@@ -387,20 +387,21 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	echo ""
 	/bin/echo -e "${BLUE}ghosting MAC/device name ${ENDCOLOR}: ${BLUE}random times at random addresses '(MAC address in privacy mode)'${ENDCOLOR}"
 
-       while :
-       do
+	while :
+	do
 		unset rando;unset mac;unset randtx
 		rando=$((RANDOM%$hightime+$lowtime))
 		sleep .5
-           	macrand ; hostn; signaljumper 
+		macrand ; hostn; signaljumper 
 		# maccheck - to be worked out later
-       		echo ""
-        	/bin/echo -e "${BLUE}next changes [New Device]: random times/MAC addresses/signal in: ${RED}$rando${ENDCOLOR} ${BLUE}sec${ENDCOLOR}"
-           	sleep $rando
+		echo ""
+		/bin/echo -e "${BLUE}next changes [New Device]: random times/MAC addresses/signal in: ${RED}$rando${ENDCOLOR} ${BLUE}sec${ENDCOLOR}"
+		sleep $rando
 		# killall -9 maccheck
-       done
+	done
      ;;
 
+#######################################################################
     # static phone mac mimic: generate/set single valid OUI (Apple/Android) based mac and hold it
      p)
 	echo -e "${BLUE} new static random cellphone MAC identity (retained/checked to prevent leaks) ${ENDCOLOR}"
@@ -408,38 +409,65 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	maccheck 
      ;;
 
+#######################################################################
     # cellphone continuous mimics (Samsung/Apple mac addresses- continually changing times/random mac addresses)
      P)
-       while :
-       do
-       		rando=$((RANDOM%$hightime+$lowtime))
-           	phmacrand
+	while :
+	do
+		rando=$((RANDOM%$hightime+$lowtime))
+		phmacrand
 		# maccheck TBC
-           	echo -e "${RED} randomizing MAC addresses at continually changing times/iPhone / Android addresses ${ENDCOLOR}"
-           	/bin/echo -e "${BLUE} Changing MAC to: ${RED}$mac${ENDCOLOR}"
-           	/bin/echo -e "${BLUE} next changes: random times, random addresses in: ${RED} $rando${BLUE} sec${ENDCOLOR}"
-           	sleep $rando
+		echo -e "${RED} randomizing MAC addresses at continually changing times/iPhone / Android addresses ${ENDCOLOR}"
+		/bin/echo -e "${BLUE} Changing MAC to: ${RED}$mac${ENDCOLOR}"
+		/bin/echo -e "${BLUE} next changes: random times, random addresses in: ${RED} $rando${BLUE} sec${ENDCOLOR}"
+		sleep $rando
 		# killall -9 maccheck
-       done
-       ;;
+	done
+	;;
 
-	# Continually randomizing MAC address mode [changing times/addresses- all brands]
+#######################################################################
+	# M - machine-id randomization (regenerated) each wipri run
+	# machine-id is a unique identifer that can (unnecessarily) be used for tracking
+	# machine-id privacy concerns: https://lists.dyne.org/lurker/message/20190308.134955.e06f4b9c.en.html#dng
+     M)
+	echo -e "${RED}Removing Old machine-id To Prevent Tracking...${ENDCOLOR}"
+	rm -f /var/lib/dbus/machine-id /etc/machine-id || {
+		echo -e "${RED}ERR! DOES MACHINE-ID FILE EXIST?${ENDCOLOR}\n" 
+	}
+	echo -e "${BLUE}Generating New Unique machine-id...${ENDCOLOR}"
+	dbus-uuidgen --ensure=/etc/machine-id && dbus-uuidgen --ensure && {
+		machineid=$(cat /etc/machine-id)
+		echo -e "${GREEN}New machine-id generated:${ENDCOLOR} ${RED}$machineid${ENDCOLOR}"
+		systemd-machine-id-setup
+	}
+	;;
+
+######################################################################
+	# b - rfkill block bluetooth (to prevent accidental leakage)
+     b)
+	rfkill block bluetooth && {
+		echo -e "${BLUE}Bluetooth Blocked By rfkill${ENDCOLOR}"
+	} 
+     ;;
+
+######################################################################
+    # Continually randomizing MAC address mode [changing times/addresses- all brands]
      r)
 	echo -e "${RED}randomizing MAC address at continually changing times/addresses ${ENDCOLOR}"
 
-       	while :
+	while :
 	do
 		rando=$((RANDOM%$hightime+$lowtime))
 		macrand
 		# maccheck # TBC
 		#/bin/echo -e "${BLUE} Changing MAC to: ${RED}$mac${ENDCOLOR}"
-           	/bin/echo -e "${BLUE} next changes: random times, random addresses in:${ENDCOLOR} ${RED} $rando${ENDCOLOR}${BLUE} sec${ENDCOLOR}"
-	       	sleep $rando
+		/bin/echo -e "${BLUE} next changes: random times, random addresses in:${ENDCOLOR} ${RED} $rando${ENDCOLOR}${BLUE} sec${ENDCOLOR}"
+		sleep $rando
 		# killall -9 maccheck
 	done
 	;;
 
-
+######################################################################
 	# Set your own static MAC choice with -m
      m)
 	echo -e "${BLUE} setting static: ${RED} ${OPTARG} ${ENDCOLOR}"
@@ -448,7 +476,7 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	maccheck 
 	 ;;
 
-
+######################################################################
 	# New MAC identity option [-i] single randomized MAC address to be held as long as wipri running
      i)
 	echo -e "${BLUE}new static random valid MAC identity${ENDCOLOR} ${RED}(HELD:${ENDCOLOR} ${BLUE}checked/retained to prevent leaks)${ENDCOLOR}"
@@ -456,12 +484,13 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	maccheck 
 	;;
 
-
+######################################################################
 	# Randomized hostname option -h [generic/common base w/randomized extension to blend in]
      h)
 	hostn
 	 ;;
 
+######################################################################
 	# Restore your previous MAC address [must have first used -h to save address]
      R)
 	if [ ! -f /etc/wipri/hostname.saved ]; then
@@ -472,14 +501,14 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 		ORG_HOSTNAME=$(</etc/wipri/hostname.saved)
 		hostnamectl set-hostname $ORG_HOSTNAME
 		dhclient -r $netdev
-	       	dhclient $netdev
+		dhclient $netdev
 		echo -e " ${GREEN}*${ENDCOLOR} ${BLUE}Hostname restored to $ORG_HOSTNAME${ENDCOLOR}\n"
 		sleep .5	
 		rm /etc/wipri/hostname.saved
 	fi
 	;;
 
-
+######################################################################
 	# Randomized signal at randomized changing times (NOTE: experimental proof of concept) 
 	# continually changes signal radius for trackers adding confusion depending on layout
 	# can (depending on environment/trackers) simulate movement [EXPERIMENTAL]
@@ -487,31 +516,33 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
      s)
 	while :
 	do
-        	signaljumper
+		signaljumper
 		sleep $rando	
 	done
-	;;
+     ;;
 
+######################################################################
 	# Randomize WiFi Network Name (SSID)
 	# (If interested, see netcat notification closer to top of wipri)
 	# Set additional flags if you would like to set simultaneous random mac
 	### SSID randomization is super experimental/"just for fun", and offers netcat notification
 	### It's not meant to be convenient. It's one option for testing and not all hostapd accesspoints
 	### May be compatible with your system.
-	A)
-        netname
-        sed -i "3s/.*/ssid=$randname/" $hostapdconf
-        # TIP: include a wipri static mac flag to simultaneously change :)
-        # wipri -d $netdev -i &  	# uncomment this if you don't want to have to run flags for mac
-        systemctl restart hostapd
+     A)
+	netname
+	sed -i "3s/.*/ssid=$randname/" $hostapdconf
+	# TIP: include a wipri static mac flag to simultaneously change :)
+	# wipri -d $netdev -i &  	# uncomment this if you don't want to have to run flags for mac
+	systemctl restart hostapd
 	echo ' '
 	/bin/echo -e "${BLUE}WiFi Network SSID changed to:${ENDCOLOR} ${RED}$randname${ENDCOLOR}"
-        # Notify remote server of new name change via Netcat [set $ncnotify variable for on/off: default off]
-        notify
+	# Notify remote server of new name change via Netcat [set $ncnotify variable for on/off: default off]
+	notify
 
-        ;;
+     ;;
 
-	# Examples/Help
+######################################################################	
+     # Examples/Help
      H)
 
 	sleep .75
@@ -526,9 +557,9 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	echo -e "${BLUE} -r mode is ideal for fluid situations- when travelling it can help protect identity;${ENDCOLOR}"
 	echo -e "${WHITE}Example #2:${ENDCOLOR} wipri -d wlan1 -m 00:00:00:00:00:00 -h off -s off"
 	echo -e "${BLUE}[Above] sets wlan1 MAC of your choice (static); hostname change [off]; signal changes [off]${ENDCOLOR}"
-       	echo "" && sleep .2
-       	echo -e "${WHITE}Example #3:${ENDCOLOR} wipri -d wlan0 -i -h -s"
-       	echo -e "${BLUE}[Above] sets wlan0 static random MAC identity; hostname changes; signal changes [on]${ENDCOLOR}"
+	echo "" && sleep .2
+	echo -e "${WHITE}Example #3:${ENDCOLOR} wipri -d wlan0 -i -h -s"
+	echo -e "${BLUE}[Above] sets wlan0 static random MAC identity; hostname changes; signal changes [on]${ENDCOLOR}"
 	echo "" && sleep .2
 	echo -e "${WHITE}Example #4:${ENDCOLOR} wipri -d wlan1mon -M"
 	echo -e "${BLUE}[Above] sets wlan1mon to new random MAC identity (static/single MAC) hostname/signal changes both [OFF]${ENDCOLOR}"
@@ -536,25 +567,26 @@ while getopts ":d:wapPrm:ihRsAH" arg; do
 	echo -e "${WHITE}Example #5:${ENDCOLOR} wipri -R"
 	echo -e "${BLUE}[Above] sets/reverts back to original hostname: ${RED}NOTE: MUST HAVE USED -h PREVIOUSLY${ENDCOLOR}"
 	echo "" && sleep .2
-       	echo -e "${WHITE}Example #6:${ENDCOLOR} wipri -d wlan0 -a"
-       	echo -e "${BLUE}Above] continuously changing: randomized [wlan0] MAC addresses + hostnames ${ENDCOLOR}"
+	echo -e "${WHITE}Example #6:${ENDCOLOR} wipri -d wlan0 -a"
+	echo -e "${BLUE}Above] continuously changing: randomized [wlan0] MAC addresses + hostnames ${ENDCOLOR}"
 	echo -e "${BLUE}+ signal randomization, each changing at the same time, continually; ${ENDCOLOR}"
 	echo "" && sleep .2
-        echo -e "${WHITE}Example #7:${ENDCOLOR} wipri -d wlan0 -P -s"
-        echo -e "${BLUE}[Above] sets wlan0 continuously changing times/smartphone MAC identities; -s adds txpower changes [on]${ENDCOLOR}"
-        echo "" && sleep .2
-        echo -e "${WHITE}Example #8:${ENDCOLOR} wipri -d wlan0 -p"
-        echo -e "${BLUE}[Above] sets wlan0 to single random smartphone MAC identity"
-        echo "" && sleep .2
-        echo -e "${WHITE}Example #9:${ENDCOLOR} wipri -d wlan0 -A"
-        echo -e "${BLUE}[Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
+	echo -e "${WHITE}Example #7:${ENDCOLOR} wipri -d wlan0 -P -s"
+	echo -e "${BLUE}[Above] sets wlan0 continuously changing times/smartphone MAC identities; -s adds txpower changes [on]${ENDCOLOR}"
+	echo "" && sleep .2
+	echo -e "${WHITE}Example #8:${ENDCOLOR} wipri -d wlan0 -p"
+	echo -e "${BLUE}[Above] sets wlan0 to single random smartphone MAC identity"
+	echo "" && sleep .2
+	echo -e "${WHITE}Example #9:${ENDCOLOR} wipri -d wlan0 -A"
+	echo -e "${BLUE}[Above] sets wlan0 hostapd WiFi Access Point to randomized SSID (Network Name)${ENDCOLOR}"
 	echo "" && sleep .2
 	echo -e "${WHITE} Example #10:${ENDCOLOR} wipri -d wlan0 -w -p"
 	echo -e "${BLUE} [Above] -w sets wlan0 dev to turn off wifi radio when not in range with saved networks preventing SSID probe leak: -p: static Apple/Android${ENDCOLOR}"
 	echo "" && sleep .2
-
+	echo -e "${WHITE}Example #11:${ENDCOLOR} wipri -d wlan0 -w -p -M"
+	echo -e "${BLUE}[Above] sets wlan0 device w turns off wifi once leaving home, p simulates smartphone mac, M randomizes machine-id identifier${ENDCOLOR}"
 
 	echo -e "${WHITE} For more details:${ENDCOLOR} ${RED}README.md${ENDCOLOR}"
-	;;
+     ;;
     esac
 done

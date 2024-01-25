@@ -44,7 +44,7 @@ read -p "Start a new disinfo identity at each boot (yes/no)?: " boot
 if [ $boot == yes ]; then
 
     echo "(the following question below can use commands from wipri or wipri-list adding them to boot)"
-    read -p "What wipri mac address command would you like to start at boot? (ex: wipri -d wlan0 -p): " wpcmd
+    read -p "What wipri mac address command would you like to start at boot? (ex: wipri -d wlan0 -w -p): " wpcmd
     sed -i "25s/.*/ExecStart=$wpcmd/" $wpservicefile
     sed -i "26s/.*/ExecReload=killall -9 wipri;$wpcmd/" $wpservicefile
     cp wipri.service /etc/systemd/system/wipri.service
